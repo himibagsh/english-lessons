@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>The Lost Hour</title>
+<title>The Lost Hour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,600;1,7..72,400&family=DM+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#EEF0F3; --surface:#FBFCFD; --surface-2:#E2E6EB;
+  --ink:#12161C; --ink-2:#39424E; --muted:#69737F;
+  --line:#CBD2DA; --line-soft:#DCE1E7;
+  --accent:#2F3A8C; --accent-soft:#DEE1F2;
+  --live:#B4690E; --live-soft:#F5E7D2;
+  --ok:#1F7A4D; --ok-soft:#D6EADF;
+  --no:#A33227; --no-soft:#F4DDD9;
+  --shadow:0 1px 2px rgba(18,22,28,.05), 0 10px 28px -20px rgba(18,22,28,.5);
+  --ui:"Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --read:"Literata", Georgia, serif;
+  --mono:"DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0D1116; --surface:#141A21; --surface-2:#1D242D;
+  --ink:#E5E9EF; --ink-2:#B7C0CB; --muted:#828C99;
+  --line:#28313B; --line-soft:#1E262F;
+  --accent:#8E97E0; --accent-soft:#1B2040;
+  --live:#E0A45C; --live-soft:#2E2317;
+  --ok:#68C293; --ok-soft:#15271E;
+  --no:#E08A7B; --no-soft:#2B1815;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 32px -22px rgba(0,0,0,.95);
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1116; --surface:#141A21; --surface-2:#1D242D;
+  --ink:#E5E9EF; --ink-2:#B7C0CB; --muted:#828C99;
+  --line:#28313B; --line-soft:#1E262F;
+  --accent:#8E97E0; --accent-soft:#1B2040;
+  --live:#E0A45C; --live-soft:#2E2317;
+  --ok:#68C293; --ok-soft:#15271E;
+  --no:#E08A7B; --no-soft:#2B1815;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 32px -22px rgba(0,0,0,.95);
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:500}
+p{margin:0}
+button{font:inherit;color:inherit}
+
+/* ---------- top bar ---------- */
+.bar{
+  position:sticky;top:0;z-index:40;background:var(--paper);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:14px;padding:10px 20px;flex-wrap:wrap;
+}
+.bar .brand{font-size:15px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.bar .brand span{color:var(--muted);font-weight:400}
+.steps{display:flex;gap:3px;overflow-x:auto;flex:1;min-width:180px}
+.steps button{
+  flex:0 0 auto;background:transparent;border:1px solid transparent;color:var(--muted);
+  padding:5px 10px;border-radius:2px;cursor:pointer;font-size:12.5px;font-weight:500;white-space:nowrap;
+}
+.steps button:hover{background:var(--surface-2);color:var(--ink)}
+.steps button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.steps button .i{font-family:var(--mono);font-size:10.5px;opacity:.7;margin-right:5px}
+.steps.locked button{cursor:default}
+.clock{
+  display:flex;align-items:center;gap:9px;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  border:1px solid var(--line);padding:4px 6px 4px 12px;border-radius:2px;background:var(--surface);
+}
+.clock .t{font-size:20px;font-weight:500;letter-spacing:-.02em;min-width:64px}
+.clock.run{border-color:var(--live);background:var(--live-soft)}
+.clock.run .t{color:var(--live)}
+.clock.done{border-color:var(--no);background:var(--no-soft)}
+.clock.done .t{color:var(--no)}
+.clock button{background:transparent;border:1px solid var(--line);padding:3px 9px;border-radius:2px;cursor:pointer;font-size:11.5px}
+.clock button:hover{border-color:var(--accent);color:var(--accent)}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px;white-space:nowrap}
+.badge.on{background:var(--ok-soft);color:var(--ok)}
+.badge.off{background:var(--surface-2);color:var(--muted)}
+.rolebtn{background:transparent;border:1px solid var(--line);padding:5px 11px;border-radius:2px;cursor:pointer;font-size:12px;color:var(--muted);white-space:nowrap}
+.rolebtn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- shell ---------- */
+.shell{max-width:1080px;margin:0 auto;padding:22px 20px 70px;display:flex;flex-direction:column;gap:22px}
+.stage{display:none}
+.stage.on{display:flex;flex-direction:column;gap:20px}
+
+.panel{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:24px 26px}
+.panel > * + *{margin-top:15px}
+.phead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line-soft);padding-bottom:12px}
+.phead h2{font-size:28px;font-weight:600;letter-spacing:-.025em}
+.phead .meta{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-left:auto;white-space:nowrap}
+.lede{font-family:var(--read);font-size:18.5px;line-height:1.6;color:var(--ink-2);font-weight:300;max-width:66ch}
+.lede b{font-weight:600;color:var(--ink)}
+.rubric{font-family:var(--mono);font-size:13.5px;line-height:1.75;color:var(--ink-2);background:var(--surface-2);padding:13px 15px}
+
+/* ---------- article ---------- */
+.article h3{font-family:var(--read);font-size:25px;font-weight:600;letter-spacing:-.01em}
+.article .by{font-family:var(--read);font-style:italic;color:var(--muted);font-size:15.5px;margin-top:3px}
+.sec{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px;margin-top:18px}
+.sec .L{font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--accent);border:1px solid var(--accent);height:21px;width:21px;display:grid;place-items:center;margin-top:6px}
+.sec p{font-family:var(--read);font-size:19px;line-height:1.68}
+.lnum{font-family:var(--mono);font-size:11px;color:var(--muted);vertical-align:super;padding-left:2px}
+mark{background:var(--live-soft);color:var(--ink);padding:0 2px}
+
+/* ---------- questions ---------- */
+.q{border-top:1px solid var(--line-soft);padding-top:15px}
+.q:first-of-type{border-top:none;padding-top:0}
+.qh{display:flex;gap:11px;align-items:baseline}
+.qn{font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--accent);min-width:24px;flex:0 0 auto}
+.qt{font-size:17.5px;flex:1}
+.qm{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.ans{display:flex;flex-direction:column;gap:7px;margin-top:9px}
+input[type="text"]{
+  font:inherit;font-size:17px;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:2px;padding:9px 11px;width:100%;
+}
+input[type="text"].ok{border-color:var(--ok);background:var(--ok-soft)}
+input[type="text"].no{border-color:var(--no);background:var(--no-soft)}
+input:focus-visible,button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:9px}
+.opt{
+  display:flex;gap:11px;align-items:flex-start;text-align:left;width:100%;cursor:pointer;
+  background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:12px 14px;font-size:17px;line-height:1.45;
+}
+.opt:hover{border-color:var(--accent)}
+.opt .k{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--muted);flex:0 0 auto;padding-top:1px}
+.opt.pick{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)} .opt.right .k{color:var(--ok)}
+.opt.wrong{border-color:var(--no);background:var(--no-soft)} .opt.wrong .k{color:var(--no)}
+.fb{display:none;margin-top:9px;font-size:14.5px;line-height:1.55;padding:11px 14px;background:var(--surface-2);color:var(--ink-2)}
+.fb.show{display:block}
+.fb b{color:var(--ink);font-weight:600}
+.fb .v{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;display:block;margin-bottom:4px}
+.fb.good{background:var(--ok-soft)} .fb.good .v{color:var(--ok)}
+.fb.bad{background:var(--no-soft)} .fb.bad .v{color:var(--no)}
+
+.acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+.btn{background:var(--accent);border:1px solid var(--accent);color:#fff;padding:10px 20px;border-radius:2px;cursor:pointer;font-size:14.5px;font-weight:600}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--accent)}
+.score{font-family:var(--mono);font-size:14px;margin-left:auto;font-variant-numeric:tabular-nums}
+.score b{color:var(--accent);font-size:18px}
+
+/* ---------- vocabulary ladder ---------- */
+.rung{border-top:1px solid var(--line-soft);padding:14px 0}
+.rung:first-child{border-top:none}
+.rung .w{font-family:var(--read);font-size:23px;font-weight:600;margin-bottom:8px}
+.rung .w .lv{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:10px;font-weight:400}
+.choices{display:grid;grid-template-columns:1fr;gap:6px}
+@media (min-width:660px){ .choices{grid-template-columns:repeat(3,1fr)} }
+.choices button{
+  background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:11px 13px;
+  cursor:pointer;font-size:16px;text-align:left;line-height:1.4;
+}
+.choices button:hover{border-color:var(--accent)}
+.choices button.pick{border-color:var(--accent);background:var(--accent-soft)}
+.choices button.right{border-color:var(--ok);background:var(--ok-soft)}
+.choices button.wrong{border-color:var(--no);background:var(--no-soft)}
+.ladder{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.lrow{display:grid;grid-template-columns:78px 1fr auto;gap:14px;align-items:center;font-size:14px;padding:9px 0;border-top:1px solid var(--line-soft)}
+.lrow .lb{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lrow .track{height:8px;background:var(--surface-2);position:relative;overflow:hidden}
+.lrow .track i{display:block;height:100%;background:var(--accent)}
+.lrow .n{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.verdict{background:var(--accent-soft);padding:14px 16px;font-size:15px;line-height:1.55;margin-top:16px}
+.verdict b{font-weight:600}
+
+/* ---------- articles gaps ---------- */
+.gap{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line-soft);align-items:start}
+.gap:first-of-type{border-top:none}
+.gap .gn{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:9px}
+.gap .sent{font-family:var(--read);font-size:19px;line-height:1.75}
+.gap .picks{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.gap .picks button{
+  font-family:var(--mono);font-size:13px;min-width:44px;padding:5px 10px;cursor:pointer;
+  background:var(--paper);border:1px solid var(--line);border-radius:2px;color:var(--ink-2);
+}
+.gap .picks button:hover{border-color:var(--accent)}
+.gap .picks button.pick{background:var(--accent);border-color:var(--accent);color:#fff}
+.gap .picks button.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.gap .picks button.wrong{background:var(--no-soft);border-color:var(--no);color:var(--no)}
+.blank{border-bottom:1.5px solid var(--accent);padding:0 16px;margin:0 2px}
+.unitmap{display:flex;flex-direction:column;gap:2px;margin-top:16px}
+.um{display:grid;grid-template-columns:1fr 62px 78px;gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line-soft);font-size:14px}
+.um .nm{color:var(--ink-2)}
+.um .sc{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;text-align:right}
+.um .u{font-family:var(--mono);font-size:11.5px;color:var(--accent);text-align:right}
+.um.weak .nm{color:var(--ink);font-weight:600}
+.um.weak .sc{color:var(--no)}
+
+/* ---------- writing ---------- */
+textarea{
+  width:100%;min-height:300px;resize:vertical;font-family:var(--read);font-size:17px;line-height:1.65;
+  color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:14px 16px;
+}
+.bullets{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+.bullets li{display:flex;gap:12px;font-size:17.5px;line-height:1.5}
+.bullets li::before{content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:9px}
+
+/* ---------- speaking card ---------- */
+.card{background:var(--paper);border:1px solid var(--line);padding:22px 24px}
+.card .topic{font-family:var(--read);font-size:24px;font-weight:600;margin-bottom:14px}
+.card ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:11px;font-size:18px;color:var(--ink-2);line-height:1.5}
+
+/* ---------- baseline card ---------- */
+.baseline{background:var(--surface-2);padding:18px 20px}
+.baseline .brow{display:grid;grid-template-columns:1fr auto;gap:14px;padding:10px 0;border-top:1px solid var(--line);font-size:15px;align-items:baseline}
+.baseline .brow:first-child{border-top:none}
+.baseline .brow .lab{color:var(--ink-2)}
+.baseline .brow .val{font-family:var(--mono);font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--ink)}
+.baseline .brow .val.pending{color:var(--muted);font-size:13px;font-weight:400}
+.copybox{width:100%;min-height:150px;font-family:var(--mono);font-size:12px;line-height:1.6;margin-top:14px}
+.hwlist{display:flex;flex-direction:column;gap:11px;margin-top:6px}
+.hwitem{display:grid;grid-template-columns:22px 1fr;gap:12px;font-size:15px;line-height:1.5}
+.hwitem .n{font-family:var(--mono);font-size:12px;color:var(--accent);padding-top:3px}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:8px}
+.pager button{background:transparent;border:1px solid var(--line);color:var(--ink-2);padding:10px 18px;border-radius:2px;cursor:pointer;font-size:14px;font-weight:500}
+.pager button:hover:not([disabled]){border-color:var(--accent);color:var(--accent)}
+.pager button[disabled]{opacity:.35;cursor:default}
+</style>
+
+<div class="bar">
+  <div class="brand">The Lost Hour <span>&#x00B7; first lesson back &#x00B7; 11 Sep</span></div>
+  <div class="steps" id="steps"></div>
+  <div class="clock" id="clock">
+    <span class="t" id="ctime">&#x2014;</span>
+    <button type="button" id="cstart">Start</button>
+    <button type="button" id="creset">Reset</button>
+  </div>
+</div>
+
+<div class="shell">
+  <div id="stages">
+
+    <!-- ===== 1 START ===== -->
+    <section class="stage on" data-id="start" data-title="Start" data-mins="0">
+      <div class="panel">
+        <div class="phead"><h2>First one back</h2><span class="meta">60 minutes</span></div>
+        <p class="lede">It has been a while, so today is short and it is not a test. We are finding out what is still sharp and what has gone rusty, so that every Saturday after this is aimed at something real.</p>
+        <p class="lede">Three numbers by the end: your <b>vocabulary level</b>, your <b>reading mark</b>, and your <b>articles score</b>. A low number today is useful &#x2014; it shows where the easy marks are hiding.</p>
+        <div class="rubric">The exam &#x00B7; Cambridge IGCSE 0511 English as a Second Language<br>Paper 1 Reading &amp; Writing &#x2014; 2 hours, 60 marks, 50% of the grade<br>Paper 2 Listening &#x2014; 40 marks, 25% &#x00B7; Paper 3 Speaking &#x2014; 40 marks, 25%</div>
+        <p class="lede">The writing goes home with you on Monday, on paper, along with the rest of this text. From next weekend: six blocks of three weekends, ending with a full mock on <b>23 January</b>.</p>
+      </div>
+    </section>
+
+    <!-- ===== 2 SPEAKING ===== -->    </section>
+
+    <!-- ===== 2 SPEAKING ===== -->
+    <section class="stage" data-id="speak" data-title="Speaking" data-mins="4">
+      <div class="panel">
+        <div class="phead"><h2>Speaking, cold</h2><span class="meta">4 minutes &#x00B7; Paper 3</span></div>
+        <p class="lede">Four minutes, no preparation, no notes. Talk &#x2014; do not answer in single sentences. Nobody will interrupt you, and mistakes cost you nothing today.</p>
+        <div class="card">
+          <div class="topic">Your day</div>
+          <ol>
+            <li>Describe a normal school day for you, from waking up to going to bed.</li>
+            <li>Some people say teenagers spend too much time on screens in the evening. What do you think?</li>
+            <li>Should schools start later in the morning? Why?</li>
+            <li>Is it better to keep the same routine every day, or to decide each morning?</li>
+            <li>&#x201C;You can catch up on sleep at the weekend.&#x201D; Do you agree?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 3 VOCABULARY ===== -->
+    <section class="stage" data-id="vocab" data-title="Vocabulary" data-mins="12">
+      <div class="panel">
+        <div class="phead"><h2>How big is your vocabulary?</h2><span class="meta">12 words &#x00B7; 8 minutes</span></div>
+        <p class="lede">Twelve words, getting harder. Choose the closest meaning. If you do not know one, guess and move on &#x2014; the pattern of what you know matters more than the total.</p>
+        <div id="ladder"></div>
+        <div class="acts">
+          <button class="btn" data-check="vocab">Check</button>
+          <button class="btn ghost" data-reset="vocab">Clear</button>
+          <span class="score" id="s-vocab"></span>
+        </div>
+        <div id="vresult"></div>
+      </div>
+    </section>
+
+    <!-- ===== 4 PRE-TEACH ===== -->
+    <section class="stage" data-id="read" data-title="Reading" data-mins="14">
+      <div class="panel article">
+        <div class="phead"><h2>Read this</h2><span class="meta">20 minutes for everything on this page</span></div>
+        <h3>The lost hour</h3>
+        <p class="by">Freya Lund on what happened when her school started an hour later</p>
+        <div class="sec"><div class="L">A</div><div><p>I have never been a morning person, but until last year I assumed that was a personality trait rather than a problem. Then my school moved the start of the day from eight o'clock to nine, as part of a trial, and something I had not expected happened: my marks went up. Not dramatically, and not in every subject &#x2014; but enough that I began reading about why.</p></div></div>
+        <div class="sec"><div class="L">B</div><div><p>Scientists who study sleep talk about the body clock, the internal timer that tells us when to feel tired. In most people it settles into a stable pattern by adulthood. In teenagers, though, it shifts: the signal to sleep arrives one to two hours later than it did in childhood, and later than it will in adulthood. The effect is well documented, and it is biological rather than a matter of willpower. A teenager told to sleep at ten and wake at six is not being lazy when they fail; they are being asked to sleep at a time their body has not yet reached.</p></div></div>
+        <div class="sec"><div class="L">C</div><div><p>What surprised me most was how much of the research is about light rather than about tiredness. Screens are usually blamed, and the blue light they <mark>emit</mark><span class="lnum">19</span> does delay the body clock &#x2014; but the studies I read suggested that the content matters more than the light. A message that makes you anxious will keep you awake far longer than the brightness of the screen that delivered it. Daylight in the morning turned out to matter more than darkness at night: students who walked to school slept better than those who were driven, whatever time they had gone to bed.</p></div></div>
+        <div class="sec"><div class="L">D</div><div><p>Schools that have moved their start times report fewer late arrivals, fewer absences and, in several cases, better results &#x2014; though not every trial has found the same thing, and the schools that volunteer for these trials may not be typical. My own school has now made the nine o'clock start permanent. I would like to claim that I use the extra hour wisely. In fact I mostly sleep through it, which, according to everything I have read, is exactly the point.</p></div></div>
+      </div>
+
+      <div class="panel">
+        <div class="phead"><h2>Exercise 1 &#x00B7; Short answers</h2><span class="meta">8 marks</span></div>
+        <div class="rubric">As short as possible. Use the words in the text &#x2014; do not put them in your own words.<br>She answers aloud; you type exactly what she says, mistakes included.</div>
+        <div id="ex1"></div>
+        <div class="acts">
+          <button class="btn" data-check="ex1">Check</button>
+          <button class="btn ghost" data-reset="ex1">Clear</button>
+          <span class="score" id="s-ex1"></span>
+        </div>
+      </div>
+
+      </div>
+    </section>
+
+    <!-- ===== ARTICLES ===== -->
+    <section class="stage" data-id="art" data-title="Articles" data-mins="12">
+      <div class="panel">
+        <div class="phead"><h2>a, an, the &#x2014; or nothing</h2><span class="meta">12 gaps &#x00B7; no time limit</span></div>
+        <p class="lede">This is the grammar you start on next Saturday, and it is the single most frequent error in your writing. Twelve gaps. Choose <b>a</b>, <b>an</b>, <b>the</b>, or <b>&#x2014;</b> for no article. The result names the exact units to do first.</p>
+        <div id="gaps"></div>
+        <div class="acts">
+          <button class="btn" data-check="art">Check</button>
+          <button class="btn ghost" data-reset="art">Clear</button>
+          <span class="score" id="s-art"></span>
+        </div>
+        <div id="artresult"></div>
+      </div>
+    </section>
+
+    <!-- ===== THE WEEK ON PAPER ===== -->
+    <section class="stage" data-id="pack" data-title="Your week" data-mins="8">
+      <div class="panel">
+        <div class="phead"><h2>What goes home on Monday</h2><span class="meta">8 minutes</span></div>
+        <p class="lede">Six short pieces of paper, one for each day. <b>Fifteen minutes a day</b>, after school, and the whole thing comes back next Monday. Nothing on it is new &#x2014; every part uses the text you have just read.</p>
+        <div class="rubric">MON &#x2014; ten words, written out with a phrase and a sentence of your own<br>TUE &#x2014; read the article again, then four multiple-choice questions<br>WED &#x2014; Murphy Unit 69, countable and uncountable<br>THU &#x2014; Murphy Unit 70, then the articles sheet<br>FRI &#x2014; the email, 120 to 160 words, <b>fifteen minutes on a clock</b><br>SAT &#x2014; read the article out loud twice, and check your own email against the list</div>
+        <p class="lede">The one rule: <b>do the Friday email to the clock and then stop.</b> Fifteen minutes, not forty. Finishing on time is the skill being practised, not finishing well.</p>
+      </div>
+    </section>
+
+    <!-- ===== 8 WRAP ===== -->    <!-- ===== 8 WRAP ===== -->
+    <section class="stage" data-id="wrap" data-title="Baseline" data-mins="0">
+      <div class="panel">
+        <div class="phead"><h2>Today's baseline</h2><span class="meta">write this in the front of the notebook</span></div>
+        <p class="lede">Three numbers, written in the front of the notebook. In January we run a full mock and put them side by side with these.</p>
+        <div class="baseline" id="baseline"></div>
+        <textarea class="copybox" id="copybox" readonly aria-label="Baseline summary to copy"></textarea>
+        <div class="acts"><button class="btn" id="copybtn">Copy summary</button></div>
+      </div>
+      <div class="panel">
+        <div class="phead"><h2>For next Saturday</h2><span class="meta">12 September</span></div>
+        <div class="hwlist">
+          <div class="hwitem"><span class="n">1</span><span><b>Murphy, Study Guide on page 326.</b> Answer it all, check against the key on page 372, and bring the list of unit numbers it says you got wrong. That tells us which of the first sixty-eight units actually stuck.</span></div>
+          <div class="hwitem"><span class="n">2</span><span><b>The words you missed today.</b> Write each one with a phrase around it and one sentence of your own. Tested out loud at 0:00 next Saturday.</span></div>
+          <div class="hwitem"><span class="n">3</span><span><b>Murphy Unit 69 and Unit 70</b> &#x2014; countable and uncountable. Left page, right page, check the key.</span></div>
+          <div class="hwitem"><span class="n">4</span><span><b>Start the three lists</b> in one notebook: scores, vocabulary, errors. Bring it every week.</span></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+
+</div>
+
+<div class="shell" style="padding-top:0">
+  <div class="pager">
+    <button type="button" id="prev">&#x2190; Back</button>
+    <button type="button" id="next">Next &#x2192;</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =============== DATA =============== */
+
+  var VOCAB = [
+    {w:"approach", lv:1, opts:["come near to something","run away from something","think carefully about something"], a:0},
+    {w:"terrible", lv:1, opts:["very large","very bad","very quiet"], a:1},
+    {w:"nervous", lv:1, opts:["extremely angry","very tired","worried that something bad will happen"], a:2},
+    {w:"afford", lv:2, opts:["have enough money for something","borrow money for something","decide not to buy something"], a:0},
+    {w:"contribute", lv:2, opts:["take something away","give a part of something","refuse to help"], a:1},
+    {w:"whereas", lv:2, opts:["as soon as","because of that","while, by contrast"], a:2},
+    {w:"assume", lv:3, opts:["think something is true without checking","prove something with evidence","refuse to believe something"], a:0},
+    {w:"significant", lv:3, opts:["happening every day","large enough to matter","difficult to explain"], a:1},
+    {w:"moderation", lv:3, opts:["careful measurement","avoiding something completely","not too much and not too little"], a:2},
+    {w:"deteriorate", lv:4, opts:["get worse","get bigger","stay exactly the same"], a:0},
+    {w:"offset", lv:4, opts:["delay a decision","balance out an effect","make an exact copy"], a:1},
+    {w:"sedentary", lv:4, opts:["done in a large group","relating to sleep","involving a lot of sitting"], a:2}
+  ];
+  var LEVELS = {
+    1:{nm:"A2 \u00b7 Book 1\u20132", note:"These three are from your own vocabulary list of 12 October."},
+    2:{nm:"B1 \u00b7 Book 3\u20134", note:"Everyday exam vocabulary \u2014 0511 texts assume these."},
+    3:{nm:"B1+ \u00b7 Book 4\u20135", note:"Where IGCSE reading actually sits."},
+    4:{nm:"B2 \u00b7 Book 5\u20136", note:"Stretch \u2014 IELTS and the harder 0511 texts."}
+  };
+
+  var EX1 = [
+    {n:"1", q:"What change did Freya's school make?", m:1,
+     accept:["eight to nine","8 to 9","start of the day from eight","moved the start","started an hour later","an hour later","from eight o'clock to nine","nine o'clock start"],
+     model:"moved the start of the day from eight o'clock to nine"},
+    {n:"2", q:"What name do scientists give to the internal timer?", m:1,
+     accept:["body clock","the body clock"],
+     model:"the body clock"},
+    {n:"3", q:"By how much does the sleep signal move in teenagers?", m:1,
+     accept:["one to two hours","1 to 2 hours","one or two hours","two hours later","one to two"],
+     trap:{w:["ten","six"], msg:"Ten and six are the times in the example sentence, not the size of the shift."},
+     model:"one to two hours (later)"},
+    {n:"4", q:"According to the studies Freya read, what matters more than the light from a screen?", m:1,
+     accept:["the content","content"],
+     trap:{w:["blue light","brightness"], msg:"Blue light and brightness are what the content is being contrasted <em>with</em>. The word <em>but</em> tells you the answer is coming."},
+     model:"the content"},
+    {n:"5", q:"Which students slept better?", m:1,
+     accept:["walked to school","who walked","walkers","students who walked"],
+     model:"students who walked to school"},
+    {n:"6", q:"What do schools report after moving their start times? Give three details.", m:3, multi:3,
+     pool:[
+       {accept:["late arrival","fewer late","lateness","arriving late"], label:"fewer late arrivals"},
+       {accept:["absence","absent"], label:"fewer absences"},
+       {accept:["better result","results","marks improved","better marks"], label:"better results, in several cases"}
+     ],
+     trap:{w:["my marks went up","her marks","not every trial","not typical"], msg:"Her own marks are not what the <em>schools</em> report, and the caution about trials is a warning, not a result."},
+     model:"fewer late arrivals \u00b7 fewer absences \u00b7 better results (in several cases)"}
+  ];
+
+  var GAPS = [
+    {cat:0, pre:"I read", post:"article about sleep last week.", a:"an"},
+    {cat:0, pre:"", post:"article said that teenagers need nine hours.", a:"the", capital:true},
+    {cat:1, pre:"Scientists call it", post:"body clock.", a:"the"},
+    {cat:1, pre:"She always walks to school in", post:"morning.", a:"the"},
+    {cat:2, pre:"", post:"teenagers need more sleep than adults do.", a:"\u2014", capital:true},
+    {cat:2, pre:"", post:"sleep is more important than most people think.", a:"\u2014", capital:true},
+    {cat:3, pre:"My brother is still at", post:"school; he leaves next year.", a:"\u2014"},
+    {cat:3, pre:"I left my bag at", post:"school where my mother teaches.", a:"the"},
+    {cat:4, pre:"Volleyball is", post:"six-versus-six team sport.", a:"a"},
+    {cat:4, pre:"Her father is", post:"engineer.", a:"an"},
+    {cat:5, pre:"She studies at", post:"University of Cambridge.", a:"the"},
+    {cat:5, pre:"We travelled through", post:"Mongolia last summer.", a:"\u2014"}
+  ];
+  var CATS = [
+    {nm:"a/an first, the second time", u:"Unit 72"},
+    {nm:"the for something already identified", u:"Units 73, 76"},
+    {nm:"no article for general statements", u:"Units 69, 70, 75"},
+    {nm:"school or the school", u:"Unit 74"},
+    {nm:"a/an with a job or a type", u:"Unit 71"},
+    {nm:"names with and without the", u:"Units 77, 78"}
+  ];
+
+  /* =============== HELPERS =============== */
+  function el(t,c,h){var e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;}
+  function norm(s){return (s||"").toLowerCase().replace(/[\u2018\u2019\u201c\u201d]/g,"'").replace(/[.,;:!?"()\-\u2014\u2013]/g," ").replace(/\s+/g," ").trim();}
+  function hits(v,list){var a=norm(v); if(!a) return false; for(var i=0;i<list.length;i++){ if(a.indexOf(norm(list[i]))!==-1) return true; } return false;}
+  function ls(k,d){ try{ var v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } }
+  function lset(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+  var state = { vocab:{}, ex1:{}, ex4:{}, art:{}, essay:"", scores:{} };
+
+  /* =============== STAGES =============== */
+  var stages = Array.prototype.slice.call(document.querySelectorAll(".stage"));
+  var stepsBar = document.getElementById("steps");
+  var cur = 0;
+  stages.forEach(function(s,i){
+    var b = el("button", null, '<span class="i">'+(i+1)+'</span>'+s.dataset.title);
+    b.type = "button";
+    b.addEventListener("click", function(){ go(i); });
+    stepsBar.appendChild(b);
+  });
+  var stepBtns = Array.prototype.slice.call(stepsBar.children);
+  var prevB = document.getElementById("prev"), nextB = document.getElementById("next");
+
+  function go(i){
+    cur = i;
+    stages.forEach(function(s,j){ s.classList.toggle("on", j===i); });
+    stepBtns.forEach(function(b,j){ b.setAttribute("aria-current", j===i ? "true":"false"); });
+    prevB.disabled = i===0; nextB.disabled = i===stages.length-1;
+    stepBtns[i].scrollIntoView({block:"nearest", inline:"nearest"});
+    window.scrollTo({top:0});
+    resetClock(parseInt(stages[i].dataset.mins,10) || 0);
+  }
+  prevB.addEventListener("click", function(){ if(cur>0) go(cur-1); });
+  nextB.addEventListener("click", function(){ if(cur<stages.length-1) go(cur+1); });
+
+  /* =============== CLOCK =============== */
+  var clock = document.getElementById("clock"), ctime = document.getElementById("ctime");
+  var cstart = document.getElementById("cstart"), creset = document.getElementById("creset");
+  var endsAt = null, mins = 0, tick = null;
+
+  function fmt(ms){
+    if(ms < 0) ms = 0;
+    var s = Math.round(ms/1000);
+    return String(Math.floor(s/60)) + ":" + String(s%60).padStart(2,"0");
+  }
+  function paint(){
+    if(!endsAt){ ctime.textContent = mins ? (mins+":00") : "\u2014"; clock.className = "clock"; return; }
+    var left = endsAt - Date.now();
+    ctime.textContent = fmt(left);
+    clock.className = "clock " + (left <= 0 ? "done" : "run");
+    if(left <= 0 && tick){ clearInterval(tick); tick = null; }
+  }
+  function resetClock(m){
+    mins = m; endsAt = null;
+    if(tick){ clearInterval(tick); tick = null; }
+    cstart.textContent = "Start";
+    clock.style.display = m ? "" : "none";
+    paint();
+  }
+  function startClock(at){
+    endsAt = at;
+    if(tick) clearInterval(tick);
+    tick = setInterval(paint, 250);
+    cstart.textContent = "Restart";
+    paint();
+  }
+  cstart.addEventListener("click", function(){
+    if(!mins) return;
+    startClock(Date.now() + mins*60000);
+  });
+  creset.addEventListener("click", function(){ resetClock(mins); });
+
+  /* =============== VOCABULARY =============== */
+  var ladder = document.getElementById("ladder");
+  VOCAB.forEach(function(v,i){
+    var r = el("div","rung");
+    r.innerHTML = '<div class="w">'+v.w+'<span class="lv">'+LEVELS[v.lv].nm+'</span></div>';
+    var ch = el("div","choices");
+    v._b = [];
+    v.opts.forEach(function(o,j){
+      var b = el("button", null, o); b.type="button";
+      b.addEventListener("click", function(){
+        state.vocab[i] = j;
+        v._b.forEach(function(x,k){ x.className = (k===j) ? "pick" : ""; });
+        push();
+      });
+      v._b.push(b); ch.appendChild(b);
+    });
+    r.appendChild(ch);
+    ladder.appendChild(r);
+  });
+
+  function checkVocab(){
+    var byLv = {1:0,2:0,3:0,4:0}, got = 0;
+    VOCAB.forEach(function(v,i){
+      var p = state.vocab[i], ok = p === v.a;
+      if(ok){ got++; byLv[v.lv]++; }
+      v._b.forEach(function(b,j){ b.className = (j===v.a) ? "right" : (j===p ? "wrong" : ""); });
+    });
+    document.getElementById("s-vocab").innerHTML = "<b>"+got+"</b> / 12";
+    state.scores.vocab = got; state.scores.vocabLv = byLv;
+
+    var box = document.getElementById("vresult");
+    var rows = "";
+    [1,2,3,4].forEach(function(L){
+      rows += '<div class="lrow"><span class="lb">'+LEVELS[L].nm.split(" \u00b7 ")[0]+'</span>'+
+              '<span class="track"><i style="width:'+(byLv[L]/3*100)+'%"></i></span>'+
+              '<span class="n">'+byLv[L]+'/3</span></div>';
+    });
+    var top = 0;
+    [1,2,3,4].forEach(function(L){ if(byLv[L] >= 2) top = L; });
+    var verdict;
+    if(top >= 4) verdict = "She is reading at <b>B2</b>. Start <b>4000 Essential English Words Book 5</b> and use Oxford Word Skills Intermediate for collocation. Book 1 is three levels behind her.";
+    else if(top === 3) verdict = "She is at <b>B1+</b>, which is where IGCSE reading sits. Start <b>Book 4</b>, and take the Book 5 words she missed today as this week's ten. Book 1 is behind her.";
+    else if(top === 2) verdict = "Solid <b>B1</b>. Start <b>Book 4</b> and expect the first fortnight to be work. Book 1 is still behind her.";
+    else verdict = "Consolidate at <b>Book 3</b> first, then move to Book 4 in November. Slower than expected \u2014 check whether it was the words or the format.";
+    box.innerHTML = '<div class="ladder">'+rows+'</div><div class="verdict">'+verdict+'</div>';
+    push();
+  }
+
+  /* =============== EXERCISE 1 =============== */
+  var e1 = document.getElementById("ex1");
+  EX1.forEach(function(q,idx){
+    var d = el("div","q");
+    d.innerHTML = '<div class="qh"><span class="qn">'+q.n+'</span><span class="qt">'+q.q+'</span><span class="qm">['+q.m+']</span></div>';
+    var wrap = el("div","ans"); q._in = [];
+    var n = q.multi || 1;
+    for(var i=0;i<n;i++){
+      var inp = el("input"); inp.type="text";
+      inp.setAttribute("aria-label", q.q + (n>1 ? " detail "+(i+1) : ""));
+      if(n>1) inp.placeholder = "detail "+(i+1);
+      (function(inp,idx,i){
+        inp.addEventListener("input", function(){
+          state.ex1[idx+"_"+i] = inp.value; push();
+        });
+      })(inp,idx,i);
+      wrap.appendChild(inp); q._in.push(inp);
+    }
+    d.appendChild(wrap);
+    var fb = el("div","fb"); d.appendChild(fb); q._fb = fb;
+    e1.appendChild(d);
+  });
+
+  function checkEx1(){
+    var total = 0;
+    EX1.forEach(function(q){
+      var got = 0;
+      if(q.pool){
+        var used = [];
+        q._in.forEach(function(inp){
+          var f = -1;
+          for(var i=0;i<q.pool.length;i++){ if(used.indexOf(i)===-1 && hits(inp.value, q.pool[i].accept)){ f=i; break; } }
+          if(f>-1){ used.push(f); got++; inp.className="ok"; } else inp.className = norm(inp.value) ? "no" : "";
+        });
+      } else {
+        var ok = hits(q._in[0].value, q.accept);
+        q._in[0].className = ok ? "ok" : "no"; got = ok ? 1 : 0;
+      }
+      total += got;
+      var joined = q._in.map(function(i){return i.value;}).join(" ");
+      var msg = "";
+      if(q.trap && got < q.m && hits(joined, q.trap.w)) msg += q.trap.msg + "<br><br>";
+      msg += "<b>Answer:</b> " + q.model;
+      q._fb.className = "fb show " + (got===q.m ? "good":"bad");
+      q._fb.innerHTML = '<span class="v">'+got+' of '+q.m+'</span>'+msg;
+    });
+    document.getElementById("s-ex1").innerHTML = "<b>"+total+"</b> / 8";
+    state.scores.ex1 = total; push();
+  }
+
+  /* =============== ARTICLES =============== */
+  var gapsBox = document.getElementById("gaps");
+  var CHOICES = ["a","an","the","\u2014"];
+  GAPS.forEach(function(g,idx){
+    var d = el("div","gap");
+    var pre = g.pre ? g.pre+" " : "";
+    var sent = pre + '<span class="blank"></span> ' + g.post;
+    d.innerHTML = '<div class="gn">'+(idx+1)+'</div><div><div class="sent">'+sent+'</div></div>';
+    var picks = el("div","picks"); g._b = [];
+    CHOICES.forEach(function(c,j){
+      var b = el("button", null, c); b.type="button";
+      b.setAttribute("aria-label", c === "\u2014" ? "no article" : c);
+      b.addEventListener("click", function(){
+        state.art[idx] = c;
+        g._b.forEach(function(x,k){ x.className = (CHOICES[k]===c) ? "pick" : ""; });
+        push();
+      });
+      g._b.push(b); picks.appendChild(b);
+    });
+    d.lastChild.appendChild(picks);
+    gapsBox.appendChild(d);
+  });
+
+  function checkArt(){
+    var got = 0, byCat = [0,0,0,0,0,0], perCat = [0,0,0,0,0,0];
+    GAPS.forEach(function(g,idx){
+      perCat[g.cat]++;
+      var p = state.art[idx], ok = p === g.a;
+      if(ok){ got++; byCat[g.cat]++; }
+      g._b.forEach(function(b,j){
+        b.className = (CHOICES[j]===g.a) ? "right" : (CHOICES[j]===p ? "wrong" : "");
+      });
+    });
+    document.getElementById("s-art").innerHTML = "<b>"+got+"</b> / 12";
+    state.scores.art = got;
+
+    var weak = [];
+    var rows = CATS.map(function(c,i){
+      var w = byCat[i] < perCat[i];
+      if(w) weak.push(c.u);
+      return '<div class="um'+(w?" weak":"")+'"><span class="nm">'+c.nm+'</span>'+
+             '<span class="sc">'+byCat[i]+'/'+perCat[i]+'</span><span class="u">'+c.u+'</span></div>';
+    }).join("");
+    var verdict = weak.length
+      ? "<b>Start with these:</b> " + weak.join(", ") + ". Everything else in Units 69\u201378 is revision for her."
+      : "<b>Clean sweep.</b> Do Units 69\u201378 as fast revision, then move straight to Units 79\u201381 on nouns.";
+    document.getElementById("artresult").innerHTML =
+      '<div class="unitmap">'+rows+'</div><div class="verdict">'+verdict+'</div>';
+    state.scores.artWeak = weak.join(", ");
+    push();
+  }
+
+  /* =============== BASELINE =============== */
+  function renderBaseline(){
+    var sc = state.scores, box = document.getElementById("baseline");
+    function row(lab, val){
+      var pending = (val == null || val === "");
+      return '<div class="brow"><span class="lab">'+lab+'</span><span class="val'+(pending?" pending":"")+'">'+
+             (pending ? "not done yet" : val)+'</span></div>';
+    }
+    var lv = sc.vocabLv, top = 0;
+    if(lv){ [1,2,3,4].forEach(function(L){ if(lv[L] >= 2) top = L; }); }
+    var lvTxt = lv ? (top ? LEVELS[top].nm : "below A2 band") : null;
+
+    box.innerHTML =
+      row("Vocabulary", sc.vocab==null ? null : sc.vocab+" / 12   \u00b7   "+lvTxt) +
+      row("Reading \u2014 Exercise 1", sc.ex1==null ? null : sc.ex1+" / 8") +
+      row("Articles", sc.art==null ? null : sc.art+" / 12") +
+      row("Articles \u2014 units to do first", sc.artWeak || (sc.art==null ? null : "none \u2014 all six clean"));
+
+    document.getElementById("copybox").value =
+      "MISHEEL \u2014 BASELINE, Fri 11 Sep 2026\n" +
+      "----------------------------------\n" +
+      "Vocabulary      " + (sc.vocab==null?"\u2014":sc.vocab+"/12  ("+lvTxt+")") + "\n" +
+      "Reading Ex1     " + (sc.ex1==null?"\u2014":sc.ex1+"/8") + "\n" +
+      "Articles        " + (sc.art==null?"\u2014":sc.art+"/12") + "\n" +
+      "Units first     " + (sc.artWeak || "\u2014") + "\n" +
+      "\nPAPER PACK given Monday, back next Monday: 10 words \u00b7 Ex4 \u00b7 Murphy 69-70 \u00b7 articles sheet \u00b7 Ex5 email (15 min)";
+  }
+  document.getElementById("copybtn").addEventListener("click", function(){
+    var b = document.getElementById("copybox");
+    b.select(); b.setSelectionRange(0, 99999);
+    if(navigator.clipboard) navigator.clipboard.writeText(b.value).catch(function(){});
+    document.getElementById("copybtn").textContent = "Copied \u2014 paste into her notebook";
+  });
+
+  /* =============== CHECK / RESET WIRING =============== */
+  var CHECK = {vocab:checkVocab, ex1:checkEx1, art:checkArt};
+  document.addEventListener("click", function(e){
+    var t = e.target.closest ? e.target.closest("[data-check],[data-reset]") : null;
+    if(!t) return;
+    var c = t.getAttribute("data-check");
+    if(c){ CHECK[c](); renderBaseline(); return; }
+    var r = t.getAttribute("data-reset");
+    if(r === "vocab"){ state.vocab = {}; VOCAB.forEach(function(v){ v._b.forEach(function(b){ b.className=""; }); });
+      document.getElementById("s-vocab").textContent=""; document.getElementById("vresult").innerHTML=""; }
+    if(r === "ex1"){ state.ex1 = {}; EX1.forEach(function(q){ q._in.forEach(function(i){ i.value=""; i.className=""; }); q._fb.className="fb"; });
+      document.getElementById("s-ex1").textContent=""; }
+    if(r === "art"){ state.art = {}; GAPS.forEach(function(g){ g._b.forEach(function(b){ b.className=""; }); });
+      document.getElementById("s-art").textContent=""; document.getElementById("artresult").innerHTML=""; }
+    delete state.scores[r];
+    push(); renderBaseline();
+  });
+
+  /* =============== LOCAL =============== */
+  function push(){ renderBaseline(); }
+
+  /* =============== BOOT =============== */
+  go(0);
+  renderBaseline();
+})();
+</script>
+
+</body>
+</html>

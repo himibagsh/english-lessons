@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>The Note Above the Note</title>
+<title>The Note Above the Note</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,600;1,7..72,400&family=DM+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F3F2F9; --surface:#FFFFFF; --surface-2:#ECEAF6; --surface-3:#E2DEF3;
+  --ink:#191635; --ink-2:#464266; --muted:#6F6A92;
+  --line:#D8D4EA; --line-soft:#E8E5F3;
+  --accent:#5B4BD6; --accent-2:#7C6FF0; --accent-soft:#E7E3FC;
+  --warm:#E0900B; --warm-soft:#FDF0D4;
+  --ok:#0E9F5E; --ok-soft:#DCF5E8;
+  --no:#DC3B45; --no-soft:#FCE4E5;
+  --shadow-sm:0 1px 2px rgba(25,22,53,.06);
+  --shadow:0 2px 4px rgba(25,22,53,.05), 0 12px 28px -18px rgba(25,22,53,.45);
+  --lift:0 4px 10px -2px rgba(91,75,214,.28);
+  --ui:"Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --read:"Literata", Georgia, serif;
+  --mono:"DM Mono", ui-monospace, Menlo, monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#111021; --surface:#1A182F; --surface-2:#232040; --surface-3:#2C2850;
+  --ink:#EFEDF8; --ink-2:#C2BDDD; --muted:#8C86AC;
+  --line:#322E52; --line-soft:#262244;
+  --accent:#9E93FF; --accent-2:#B4ABFF; --accent-soft:#282351;
+  --warm:#F5BD52; --warm-soft:#3A2D14;
+  --ok:#4FD198; --ok-soft:#12301F;
+  --no:#FF8087; --no-soft:#3A1A20;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 2px 4px rgba(0,0,0,.35), 0 14px 32px -20px rgba(0,0,0,.95);
+  --lift:0 4px 12px -2px rgba(158,147,255,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#111021; --surface:#1A182F; --surface-2:#232040; --surface-3:#2C2850;
+  --ink:#EFEDF8; --ink-2:#C2BDDD; --muted:#8C86AC;
+  --line:#322E52; --line-soft:#262244;
+  --accent:#9E93FF; --accent-2:#B4ABFF; --accent-soft:#282351;
+  --warm:#F5BD52; --warm-soft:#3A2D14;
+  --ok:#4FD198; --ok-soft:#12301F;
+  --no:#FF8087; --no-soft:#3A1A20;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 2px 4px rgba(0,0,0,.35), 0 14px 32px -20px rgba(0,0,0,.95);
+  --lift:0 4px 12px -2px rgba(158,147,255,.35);
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);font-size:17px;
+  line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit}
+@media (prefers-reduced-motion:no-preference){
+  .opt,.letters button,.choices button,.btn,.reveal,.steps button,.wcard{transition:
+    background-color .13s ease, border-color .13s ease, color .13s ease,
+    box-shadow .13s ease, transform .1s ease}
+}
+
+/* ---------- top bar ---------- */
+.bar{position:sticky;top:0;z-index:40;background:var(--paper);
+  border-bottom:1px solid var(--line);padding:11px 20px 0}
+.barrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:1080px;margin:0 auto}
+.bar .brand{font-size:16px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.bar .brand span{color:var(--muted);font-weight:400;font-size:13.5px}
+.steps{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:190px;padding-bottom:2px;
+  scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.steps button{flex:0 0 auto;background:transparent;border:1.5px solid transparent;
+  color:var(--muted);padding:6px 13px;border-radius:999px;cursor:pointer;
+  font-size:13px;font-weight:600;white-space:nowrap}
+.steps button:hover{background:var(--surface-2);color:var(--ink)}
+.steps button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .steps button[aria-current="true"],
+:root:not([data-theme="light"]) .steps button[aria-current="true"]{color:#12102A}
+.steps button.done{color:var(--ok)}
+.steps button .i{font-family:var(--mono);font-size:11px;opacity:.7;margin-right:6px}
+
+.clock{display:flex;align-items:center;gap:8px;font-family:var(--mono);
+  font-variant-numeric:tabular-nums;border:1.5px solid var(--line);padding:5px 7px 5px 13px;
+  border-radius:999px;background:var(--surface)}
+.clock .t{font-size:20px;font-weight:500;min-width:62px}
+.clock.run{border-color:var(--warm);background:var(--warm-soft)} .clock.run .t{color:var(--warm)}
+.clock.done{border-color:var(--no);background:var(--no-soft)} .clock.done .t{color:var(--no)}
+.clock button{background:transparent;border:1.5px solid var(--line);padding:4px 11px;
+  border-radius:999px;cursor:pointer;font-size:12px;font-family:var(--ui);font-weight:600}
+.clock button:hover{border-color:var(--accent);color:var(--accent)}
+
+/* progress rail */
+.prog{max-width:1080px;margin:9px auto 0;height:4px;background:var(--surface-2);
+  border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);border-radius:999px;
+  transition:width .25s ease}
+.progtext{max-width:1080px;margin:6px auto 9px;font-family:var(--mono);font-size:11px;
+  color:var(--muted);letter-spacing:.04em}
+
+/* ---------- shell ---------- */
+.shell{max-width:1080px;margin:0 auto;padding:24px 20px 80px;
+  display:flex;flex-direction:column;gap:22px}
+.stage{display:none}
+.stage.on{display:flex;flex-direction:column;gap:22px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:26px 28px}
+.panel > * + *{margin-top:16px}
+.phead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  border-bottom:2px solid var(--surface-2);padding-bottom:13px}
+.phead h2{font-size:29px;font-weight:700;letter-spacing:-.025em}
+.phead .meta{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);background:var(--accent-soft);padding:5px 11px;border-radius:999px;
+  margin-left:auto;white-space:nowrap;font-weight:500}
+.lede{font-size:18px;line-height:1.6;color:var(--ink-2);max-width:66ch}
+.lede b{font-weight:700;color:var(--ink)}
+.rubric{font-size:15px;line-height:1.7;color:var(--ink-2);background:var(--surface-2);
+  border-radius:10px;padding:15px 17px}
+.rubric b{color:var(--ink);font-weight:700}
+
+/* ---------- tip callout ---------- */
+.tipbox{border-left:4px solid var(--warm);background:var(--warm-soft);
+  padding:15px 18px;border-radius:0 10px 10px 0}
+.tiplbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--warm);display:block;margin-bottom:7px;font-weight:600}
+.tipbox p{font-size:15.5px;line-height:1.6;color:var(--ink-2)}
+.tipbox p b{color:var(--ink);font-weight:700}
+
+/* ---------- article ---------- */
+.article h3{font-family:var(--read);font-size:28px;font-weight:600;letter-spacing:-.015em}
+.article .by{font-family:var(--read);font-style:italic;color:var(--muted);
+  font-size:16px;margin-top:4px}
+.sec{display:grid;grid-template-columns:30px minmax(0,1fr);gap:16px;margin-top:20px}
+.sec .L{font-family:var(--mono);font-size:12.5px;font-weight:500;color:#fff;
+  background:var(--accent);border-radius:8px;height:27px;width:27px;
+  display:grid;place-items:center;margin-top:5px}
+:root[data-theme="dark"] .sec .L,:root:not([data-theme="light"]) .sec .L{color:#12102A}
+.sec p{font-family:var(--read);font-size:19px;line-height:1.72}
+.lnum{font-family:var(--mono);font-size:11px;color:var(--muted);vertical-align:super;padding-left:2px}
+mark,mark.hl{background:var(--warm-soft);color:var(--ink);padding:1px 4px;border-radius:4px;
+  box-shadow:inset 0 -2px 0 var(--warm)}
+
+/* ---------- questions ---------- */
+.q{border-top:1px solid var(--line-soft);padding-top:18px;margin-top:18px}
+.q:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.qh{display:flex;gap:12px;align-items:baseline}
+.qn{font-family:var(--mono);font-size:13px;font-weight:500;color:#fff;background:var(--accent);
+  border-radius:7px;padding:3px 9px;flex:0 0 auto}
+:root[data-theme="dark"] .qn,:root:not([data-theme="light"]) .qn{color:#12102A}
+.qt{font-size:17.5px;flex:1;line-height:1.45}
+.qm{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.ans{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+input[type="text"]{font:inherit;font-size:17px;color:var(--ink);background:var(--paper);
+  border:2px solid var(--line);border-radius:10px;padding:12px 14px;width:100%}
+input[type="text"]:focus{border-color:var(--accent);background:var(--surface)}
+input[type="text"].ok{border-color:var(--ok);background:var(--ok-soft)}
+input[type="text"].no{border-color:var(--no);background:var(--no-soft)}
+input:focus-visible,button:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--accent-2);outline-offset:2px}
+
+/* ---------- multiple choice ---------- */
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.opt{display:flex;gap:13px;align-items:flex-start;text-align:left;width:100%;cursor:pointer;
+  background:var(--surface);border:2px solid var(--line);border-radius:10px;
+  padding:14px 16px;font-size:17px;line-height:1.45;box-shadow:var(--shadow-sm)}
+.opt:hover{border-color:var(--accent-2);transform:translateY(-1px);box-shadow:var(--lift)}
+.opt .k{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--muted);
+  background:var(--surface-2);border-radius:7px;padding:3px 10px;flex:0 0 auto}
+.opt.pick{border-color:var(--accent);background:var(--accent-soft)}
+.opt.pick .k{background:var(--accent);color:#fff}
+:root[data-theme="dark"] .opt.pick .k,:root:not([data-theme="light"]) .opt.pick .k{color:#12102A}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .k{background:var(--ok);color:#fff}
+.opt.right::after{content:"\2713";margin-left:auto;color:var(--ok);font-weight:700;font-size:19px}
+.opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.opt.wrong .k{background:var(--no);color:#fff}
+.opt.wrong::after{content:"\2715";margin-left:auto;color:var(--no);font-weight:700;font-size:18px}
+
+/* ---------- which-section matching ---------- */
+.matchrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;
+  padding:15px 0;border-top:1px solid var(--line-soft)}
+.matchrow:first-of-type{border-top:none;padding-top:4px}
+.stmt{font-size:17px;line-height:1.5;display:flex;gap:11px;align-items:baseline}
+.stmt .qn{font-size:12.5px}
+.letters{display:flex;gap:7px;flex:0 0 auto}
+.letters button{font-family:var(--mono);font-size:16px;font-weight:500;
+  width:48px;height:48px;border:2px solid var(--line);background:var(--surface);
+  border-radius:12px;cursor:pointer;color:var(--ink-2);box-shadow:var(--shadow-sm)}
+.letters button:hover{border-color:var(--accent-2);color:var(--accent);
+  transform:translateY(-1px);box-shadow:var(--lift)}
+.letters button.picked{background:var(--accent);border-color:var(--accent);color:#fff;
+  box-shadow:var(--lift)}
+:root[data-theme="dark"] .letters button.picked,
+:root:not([data-theme="light"]) .letters button.picked{color:#12102A}
+.letters button.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.letters button.wrong{background:var(--no);border-color:var(--no);color:#fff}
+:root[data-theme="dark"] .letters button.right,:root[data-theme="dark"] .letters button.wrong,
+:root:not([data-theme="light"]) .letters button.right,
+:root:not([data-theme="light"]) .letters button.wrong{color:#12102A}
+
+/* ---------- feedback ---------- */
+.fb{display:none;margin-top:12px;font-size:15.5px;line-height:1.6;padding:14px 17px;
+  border-radius:10px;background:var(--surface-2);color:var(--ink-2)}
+.fb.show{display:block}
+.fb b{color:var(--ink);font-weight:700}
+.fb .v{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;
+  display:block;margin-bottom:6px;font-weight:500}
+.fb.good{background:var(--ok-soft)} .fb.good .v{color:var(--ok)}
+.fb.bad{background:var(--no-soft)} .fb.bad .v{color:var(--no)}
+
+/* ---------- actions ---------- */
+.acts{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.btn{background:var(--accent);border:2px solid var(--accent);color:#fff;padding:12px 26px;
+  border-radius:999px;cursor:pointer;font-size:15.5px;font-weight:700;box-shadow:var(--lift)}
+:root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#12102A}
+.btn:hover{background:var(--accent-2);border-color:var(--accent-2);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--line);box-shadow:none}
+.btn.ghost:hover{background:var(--accent-soft);border-color:var(--accent);transform:none}
+.reveal{background:transparent;border:2px solid var(--line);color:var(--accent);
+  padding:10px 20px;border-radius:999px;cursor:pointer;font-size:14.5px;font-weight:700}
+.reveal:hover{border-color:var(--accent);background:var(--accent-soft)}
+.reveal[disabled]{opacity:.5;cursor:default}
+.score{margin-left:auto;font-family:var(--mono);font-size:14px;color:var(--muted);
+  font-variant-numeric:tabular-nums;background:var(--surface-2);padding:8px 16px;
+  border-radius:999px}
+.score b{color:var(--accent);font-size:20px;font-weight:700}
+
+/* ---------- word cards ---------- */
+.words{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:11px;margin-top:14px}
+.wcard{background:var(--surface);border:2px solid var(--line);border-radius:10px;
+  padding:15px 17px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-sm)}
+.wcard:hover{border-color:var(--accent-2);box-shadow:var(--lift)}
+.wcard .w{font-family:var(--read);font-size:20px;font-weight:600;color:var(--ink)}
+.wcard .d{font-size:15px;color:var(--ink-2);line-height:1.45}
+
+/* ---------- checklists (pack review) ---------- */
+.checklist{display:flex;flex-direction:column;gap:2px;margin-top:14px}
+.crow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:14px;align-items:center;
+  padding:13px 0;border-top:1px solid var(--line-soft);font-size:16.5px}
+.crow:first-child{border-top:none}
+.crow .n{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.crow .t{color:var(--ink-2);line-height:1.45}
+.crow .t b{color:var(--ink);font-weight:700}
+.crow .a{font-family:var(--mono);font-size:16px;font-weight:500;color:#fff;background:var(--ok);
+  padding:5px 15px;border-radius:999px;white-space:nowrap}
+:root[data-theme="dark"] .crow .a,:root:not([data-theme="light"]) .crow .a{color:#12102A}
+.hidden-answers .crow .a{visibility:hidden}
+
+/* ---------- paraphrase table ---------- */
+.tablescroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);margin-top:14px}
+.pairs{width:100%;border-collapse:collapse;font-size:15.5px;min-width:520px}
+.pairs th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-align:left;font-weight:500;padding:13px 18px;
+  border-bottom:2px solid var(--surface-2);background:var(--surface-2)}
+.pairs td{padding:14px 18px;border-bottom:1px solid var(--line-soft);vertical-align:top;
+  line-height:1.5;color:var(--ink-2)}
+.pairs tr:last-child td{border-bottom:none}
+.pairs td:first-child{font-family:var(--read);font-size:16.5px;color:var(--ink)}
+
+/* ---------- audio cue ---------- */
+.audio{border-left:4px solid var(--accent);background:var(--accent-soft);
+  padding:15px 18px;border-radius:0 10px 10px 0}
+.audio .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--accent);display:block;margin-bottom:7px;font-weight:600}
+.audio p{font-size:15.5px;line-height:1.6;color:var(--ink-2)}
+.audio code{font-family:var(--mono);font-size:14px;color:var(--ink);background:var(--surface);
+  padding:3px 8px;border-radius:6px}
+
+/* ---------- wrap ---------- */
+.setlist{display:flex;flex-direction:column;gap:11px;margin-top:12px;padding:0;list-style:none}
+.setlist li{display:flex;gap:13px;font-size:16.5px;line-height:1.5;list-style:none}
+.setlist li::before{content:"";flex:0 0 auto;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);margin-top:10px}
+.baseline{background:var(--surface-2);border-radius:10px;padding:8px 20px}
+.brow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;padding:14px 0;
+  border-top:1px solid var(--line);font-size:16.5px;align-items:baseline}
+.brow:first-child{border-top:none}
+.brow .lab{color:var(--ink-2)}
+.brow .val{font-family:var(--mono);font-size:19px;font-weight:500;
+  font-variant-numeric:tabular-nums;color:var(--accent)}
+.brow .val.pending{color:var(--muted);font-size:14px;font-weight:400;font-family:var(--ui)}
+.copybox{width:100%;min-height:165px;font-family:var(--mono);font-size:13px;line-height:1.7;
+  margin-top:16px;color:var(--ink);background:var(--paper);border:2px solid var(--line);
+  border-radius:10px;padding:15px 17px;resize:vertical}
+
+/* ---------- pager ---------- */
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:6px}
+.pager button{background:var(--surface);border:2px solid var(--line);color:var(--ink-2);
+  padding:13px 24px;border-radius:999px;cursor:pointer;font-size:15.5px;font-weight:700;
+  box-shadow:var(--shadow-sm)}
+.pager button:hover:not([disabled]){border-color:var(--accent);color:var(--accent)}
+.pager button[disabled]{opacity:.35;cursor:default;box-shadow:none}
+</style>
+
+<div class="bar">
+  <div class="barrow">
+    <div class="brand">The Note Above the Note <span>&#x00B7; Misheel &#x00B7; 20 Sep</span></div>
+    <div class="steps" id="steps"></div>
+    <div class="clock" id="clock">
+      <span class="t" id="ctime">&#x2014;</span>
+      <button type="button" id="cstart">Start</button>
+      <button type="button" id="creset">Reset</button>
+    </div>
+  </div>
+  <div class="prog"><i id="progbar" style="width:0%"></i></div>
+  <div class="progtext" id="progtext"></div>
+</div>
+
+<div class="shell">
+  <div id="stages">
+
+    <section class="stage on" data-id="words" data-title="Your ten words" data-mins="10">
+      <div class="panel">
+        <div class="phead"><h2>The ten words, from memory</h2><span class="meta">10 minutes</span></div>
+        <p class="lede">Close the pack. Say each one out loud, then use it in a sentence that is <b>not</b> the sentence you wrote on Monday. A word you can only use in one sentence is not learned yet.</p>
+        <div class="checklist" id="wordlist"></div>
+        <div class="acts">
+          <button class="btn" data-check="words">Show the phrases</button>
+          <span class="score" id="s-words"></span>
+        </div>
+        <div class="rubric">Count how many came back without help. Write that number at the top of Monday's page &#x2014; it is the first measurement of whether the ten-a-week system works for you.</div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="email" data-title="Your email" data-mins="12">
+      <div class="panel">
+        <div class="phead"><h2>Friday's email, out loud</h2><span class="meta">12 minutes</span></div>
+        <p class="lede">Read the whole thing aloud, slowly, without stopping to explain. Reading your own writing out is the fastest error-finder there is &#x2014; your ear catches what your eye skips.</p>
+        <div class="rubric">Then answer three questions, in this order:<br>1. How many corrections did you find on Saturday, on your own?<br>2. Which bullet point got the least writing?<br>3. Did you stop at fifteen minutes?</div>
+        <p class="lede">I will not correct anything yet. This week's email is marked tonight with codes only, and you fix it next Saturday in the first fifteen minutes.</p>
+        <div class="tipbox">
+          <span class="tiplbl">The number that matters</span>
+          <p>Self-corrections found on Saturday. Anything above three means the checklist is working. Zero means you read it looking for reassurance rather than mistakes &#x2014; which everyone does the first time.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="pack" data-title="The pack" data-mins="13">
+      <div class="panel">
+        <div class="phead"><h2>Tuesday &#x00B7; Exercise 4</h2><span class="meta">4 marks</span></div>
+        <p class="lede">Read out what you wrote before you look. For every one you got wrong, say <b>which line of the article proves the right answer</b> before I say anything.</p>
+        <div class="checklist hidden-answers" id="packex4"></div>
+        <div class="acts"><button class="reveal" data-reveal="packex4">Reveal answers</button></div>
+      </div>
+      <div class="panel">
+        <div class="phead"><h2>Thursday &#x00B7; the articles sheet</h2><span class="meta">12 gaps</span></div>
+        <p class="lede">Same rule: your answer first, then the reason, then we look. The reason matters more than the answer this week.</p>
+        <div class="checklist hidden-answers" id="packart"></div>
+        <div class="acts"><button class="reveal" data-reveal="packart">Reveal answers</button></div>
+        <div class="rubric">Whatever you missed here is the Murphy unit you repeat this week. Units 69 and 70 are done; 71 to 78 are still ahead.</div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="read" data-title="New text" data-mins="12">
+      <div class="panel">
+        <div class="phead"><h2>Eight words, then read</h2><span class="meta">12 minutes</span></div>
+        <p class="lede">Say each one aloud. Then read the article once, fast, without stopping at anything you do not know.</p>
+        <div class="words" id="preteach"></div>
+      </div>
+      <div class="panel article">
+        <div class="phead"><h2>The article</h2><span class="meta">Sections A&#x2013;D &#x00B7; 421 words</span></div>
+        <h3>The note above the note</h3>
+        <p class="by">Anna Petrov spends ten weeks learning to throat sing</p>
+        <div class="sec"><div class="L">A</div><div><p>Before I moved to Mongolia last year, I had heard recordings of <em>kh&#x00F6;&#x00F6;mii</em>, the style of singing in which one person produces two notes at the same time. I assumed it was something you were either born with or you were not. So when a colleague mentioned that a teacher in my neighbourhood accepted adult beginners, I signed up &#x2014; mainly to prove myself wrong. The advertisement promised that students would perform in front of an audience after ten lessons. What I got instead was something I had not expected: an education in how to listen.</p></div></div><div class="sec"><div class="L">B</div><div><p>My teacher, Batbayar, began by explaining where the sound comes from. <em>Kh&#x00F6;&#x00F6;mii</em> is usually translated as &#x201C;throat singing&#x201D;, although &#x201C;overtone singing&#x201D; would be more accurate: the singer holds one low note and slowly changes the shape of the mouth, so that a second, whistle-like note appears above it. Herders in the west of the country are generally credited with developing the technique, and it has always been associated with the sounds of the natural world &#x2014; wind crossing grass, water running over stones. Batbayar told me that his own teacher had learned it from an uncle, and that until quite recently almost nobody studied it in a classroom.</p></div></div><div class="sec"><div class="L">C</div><div><p>There were five of us in the group, ranging in age from 19 to 63. In the first three sessions we did not sing at all. Instead we practised breathing, and listened to recordings until we could tell one regional style from another. Batbayar was endlessly patient, which surprised me, as I had imagined that a teacher of a traditional art would be strict. He asked us to hum one note for as long as we could, then to move our tongues slowly forwards and backwards while humming. It sounds simple, and it is not: for a fortnight I produced nothing but a flat buzz. The others appeared to be progressing faster than I was, and I began to wonder whether I should stop.</p></div></div><div class="sec"><div class="L">D</div><div><p>Then, in the sixth lesson, it happened. Somewhere above my own voice a thin, clear note appeared, and the whole room turned round. I would love to tell you that I could then repeat it whenever I wanted; in fact it took another three weeks before I could find that note <mark class="hl">reliably</mark>.<span class="lnum">28</span> I am still a long way from performing, and I have quietly decided not to take part in the concert. But I hear ordinary sound differently now. I catch the higher notes hiding inside noises I used to ignore, from car engines to the wind against my window. Batbayar says that this is the real lesson, and that the singing follows.</p></div></div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="ex2" data-title="Exercise 2" data-mins="18">
+      <div class="panel">
+        <div class="phead"><h2>Exercise 2 &#x00B7; Which section?</h2><span class="meta">6 marks &#x00B7; new</span></div>
+        <p class="lede">This is an exercise type you have not met yet. Which section, A&#x2013;D, contains each piece of information? A section can be used more than once.</p>
+        <div class="tipbox">
+          <span class="tiplbl">Where the marks go</span>
+          <p>Two sections will always look possible. One gives an <b>example</b>; the other gives the <b>reason</b>, the <b>feeling</b> or the <b>comparison</b> that the statement actually asks for. Underline the key word in the statement first &#x2014; <em>why</em>, <em>feel</em>, <em>compare</em> &#x2014; and match that, not the topic.</p>
+        </div>
+        <div id="ex2"></div>
+        <div class="acts">
+          <button class="btn" data-check="ex2">Check</button>
+          <button class="btn ghost" data-reset="ex2">Clear</button>
+          <span class="score" id="s-ex2"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="ex3" data-title="Exercise 3" data-mins="17">
+      <div class="panel">
+        <div class="phead"><h2>Exercise 3 &#x00B7; Note-making</h2><span class="meta">6 marks &#x00B7; new</span></div>
+        <p class="lede">Imagine you are giving a talk to your class about <em>kh&#x00F6;&#x00F6;mii</em>. Make short notes under each heading, using words from the article.</p>
+        <div class="tipbox">
+          <span class="tiplbl">Read the heading twice</span>
+          <p>Whole marks are lost here for one reason: true facts written under the wrong heading. If the heading says <b>difficulties</b>, a date earns nothing. Notes only &#x2014; no full sentences &#x2014; but include a verb where the note needs one.</p>
+        </div>
+        <div id="ex3"></div>
+        <div class="acts">
+          <button class="btn" data-check="ex3">Check</button>
+          <button class="btn ghost" data-reset="ex3">Clear</button>
+          <span class="score" id="s-ex3"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="pairs" data-title="Paraphrase" data-mins="10">
+      <div class="panel">
+        <div class="phead"><h2>What the paper actually tests</h2><span class="meta">10 minutes</span></div>
+        <p class="lede">The exam almost never repeats the words of the text. It says the same thing a different way, and your job is to recognise it. Cover the right column, read the left, and predict how a question would put it.</p>
+        <div class="tablescroll">
+          <table class="pairs">
+            <thead><tr><th>The article says</th><th>A question would say</th></tr></thead>
+            <tbody id="pairs"></tbody>
+          </table>
+        </div>
+        <div class="rubric">Homework: find three more pairs like these in the next text you read. Collect paraphrases, not just single words.</div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="listen" data-title="Listening" data-mins="20">
+      <div class="panel">
+        <div class="phead"><h2>Paper 2 &#x00B7; Exercise 2</h2><span class="meta">10 marks &#x00B7; first listening</span></div>
+        <p class="lede">Five short conversations, two questions each. You hear every recording <b>twice</b>. This is a quarter of the whole qualification and it is the part you have not practised at all.</p>
+        <div class="audio">
+          <span class="lbl">For the teacher</span>
+          <p><code>2024 Summer / Audio 22.mp3</code> &#x2014; scrub to roughly <b>13:00</b> and stop when you hear &#x201C;Exercise 2&#x201D;. Share the tab audio in Meet, or hold the phone to the microphone if sharing sound fails.</p>
+        </div>
+        <div class="tipbox">
+          <span class="tiplbl">Before you play it</span>
+          <p>Read all ten questions first. Thirty seconds of reading buys you the whole exercise &#x2014; you are listening <em>for</em> something instead of listening <em>to</em> everything.</p>
+        </div>
+        <div id="listen"></div>
+        <div class="acts">
+          <button class="btn" data-check="listen">Check</button>
+          <button class="btn ghost" data-reset="listen">Clear</button>
+          <span class="score" id="s-listen"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage" data-id="wrap" data-title="Close" data-mins="8">
+      <div class="panel">
+        <div class="phead"><h2>Today's numbers</h2><span class="meta">8 minutes</span></div>
+        <div class="baseline" id="baseline"></div>
+        <textarea class="copybox" id="copybox" readonly aria-label="Summary to copy"></textarea>
+        <div class="acts"><button class="btn" id="copybtn">Copy summary</button></div>
+      </div>
+      <div class="panel">
+        <div class="phead"><h2>This week</h2><span class="meta">back next Sunday</span></div>
+        <ul class="setlist">
+          <li><b>Hand the pack in tomorrow.</b> All six days, with the times you actually took written in the margin.</li>
+          <li><b>Murphy Units 71 and 72</b> &#x2014; a/an and some, a/an and the. Two units, Tuesday and Thursday.</li>
+          <li><b>Ten new words</b> from today's article, each with the phrase around it and a sentence of your own.</li>
+          <li><b>Three paraphrase pairs</b> from anything you read this week, written in the notebook.</li>
+          <li><b>One listening</b> &#x2014; the same Exercise 2 again on Friday, without looking at your answers. You should get more.</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="pager">
+    <button type="button" id="prev">&#x2190; Back</button>
+    <button type="button" id="next">Next &#x2192;</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var WORDS = [
+    ["assume","I assumed that was a personality trait"],
+    ["a personality trait","rather than a problem"],
+    ["a trial","as part of a trial"],
+    ["the body clock","scientists talk about the body clock"],
+    ["willpower","biological rather than a matter of willpower"],
+    ["emit","the blue light they emit"],
+    ["anxious","a message that makes you anxious"],
+    ["an absence","fewer late arrivals, fewer absences"],
+    ["typical","may not be typical"],
+    ["permanent","made the nine o'clock start permanent"]
+  ];
+
+  var PRE = [
+    {w:"overtone", d:"a higher note that sounds above the main note"},
+    {w:"be credited with", d:"be said to be the people who did it first"},
+    {w:"be associated with", d:"be connected with, in people's minds"},
+    {w:"endlessly patient", d:"never becoming annoyed, however long it takes"},
+    {w:"progress", d:"to improve, to move forward"},
+    {w:"reliably", d:"every time, not by luck"},
+    {w:"a fortnight", d:"two weeks"},
+    {w:"ignore", d:"to pay no attention to something"}
+  ];
+
+  var PACK_EX4 = [["7","B","simply part of who she was &#x2014; <b>&#x201C;a personality trait rather than a problem&#x201D;</b>"],["8","C","asked to do something their body cannot yet do &#x2014; <b>not</b> a matter of willpower"],["9","A","give out &#x2014; screens <b>produce</b> the blue light themselves"],["10","B","not all trials agree, and the schools may not be <b>typical</b>"]];
+  var PACK_ART = [["1","a","first mention of the clock"],["2","The","second mention &#x2014; we know which clock"],["3","the","<b>in the morning</b> &#x2014; fixed phrase"],["4","The","there is only one sun"],["5","&#x2014;","general statement, plural"],["6","&#x2014;","general statement, uncountable"],["7","&#x2014;","<b>at school</b> = still a pupil"],["8","the","a particular building"],["9","an","a job, before a vowel sound"],["10","a","a type of thing"],["11","the","<b>the University of&#x2026;</b> takes the"],["12","&#x2014;","country names take no article"]];
+
+  var LISTEN = [
+    {n:"9",  q:"What surprised the girl about the firework display?",
+     opts:["how loud it was","how long it lasted for","how many people were there"], a:0},
+    {n:"10", q:"The boy is concerned about firework displays because",
+     opts:["they cause harm to the environment.","spectators can get hurt at them.","they are quite frightening."], a:0},
+    {n:"11", q:"What did the girl find most difficult about sailing?",
+     opts:["turning the boat","stopping the boat","getting in the boat"], a:1},
+    {n:"12", q:"The boy thinks their instructor",
+     opts:["was good at explaining things.","spent equal time with all students.","told some very entertaining stories."], a:0},
+    {n:"13", q:"What does the girl need help with?",
+     opts:["finding information","organising information","cutting information"], a:2},
+    {n:"14", q:"When does she want to meet her friend?",
+     opts:["tomorrow morning","tomorrow afternoon","tomorrow evening"], a:1},
+    {n:"15", q:"Where does the man work now?",
+     opts:["in people's homes","in a large factory","in a college"], a:0},
+    {n:"16", q:"What does he like most about his job?",
+     opts:["travelling to different places","solving various problems","working to his own schedule"], a:1},
+    {n:"17", q:"How did the girl find out about the dance class?",
+     opts:["She was told about it by a relative.","She found it on the internet.","She saw an advert for it."], a:2},
+    {n:"18", q:"The girl says that the venue of the dance class is",
+     opts:["used for different purposes.","quite difficult to find.","in a very old building."], a:1}
+  ];
+
+  var EX2 = [
+    {n:"(a)", s:"a comparison between two ways of describing the singing", a:"B",
+     why:"B contrasts \u201cthroat singing\u201d with \u201covertone singing\u201d. That is the only comparison of two <em>terms</em> in the text."},
+    {n:"(b)", s:"an admission that the writer considered giving up", a:"C",
+     why:"C: \u201cI began to wonder whether I should stop.\u201d D also mentions stopping \u2014 but stopping the <em>concert</em>, not the course."},
+    {n:"(c)", s:"the writer's reason for joining the class", a:"A",
+     why:"A: \u201cmainly to prove myself wrong.\u201d The advertisement and the concert are in A too, but neither was her reason."},
+    {n:"(d)", s:"examples of everyday sounds the writer now notices", a:"D",
+     why:"D names car engines and wind at the window. B also names wind and water \u2014 but as what kh\u00f6\u00f6mii is <em>associated with</em>, not what she now notices."},
+    {n:"(e)", s:"how the skill was passed on in the past", a:"B",
+     why:"B: learned from an uncle, and almost nobody studied it in a classroom. C describes how <em>her own</em> class was taught \u2014 that is the present, not the past."},
+    {n:"(f)", s:"a way in which the writer's expectations of a person were wrong", a:"C",
+     why:"C: she expected a strict teacher and found an endlessly patient one. A is about expectations of <em>the course</em>, not of a person."}
+  ];
+
+  var EX3 = [
+    {heading:"Facts about the history of kh\u00f6\u00f6mii:", marks:3,
+     pool:[
+       {accept:["herders","west"], label:"developed by herders in the west of the country"},
+       {accept:["natural world","nature","wind","water","stones","grass"], label:"associated with sounds of the natural world"},
+       {accept:["uncle","family","relative"], label:"passed on within families \u2014 his teacher learned from an uncle"},
+       {accept:["classroom","not taught in school","nobody studied"], label:"until recently almost nobody studied it in a classroom"}
+     ],
+     trap:{words:["five of us","19","63","sixth","three weeks","ten lessons"], msg:"Those are facts about <em>her class</em>, not about the history of kh\u00f6\u00f6mii. Match the heading, not the topic."}},
+    {heading:"What Anna found difficult:", marks:3,
+     pool:[
+       {accept:["flat buzz","buzz","nothing but","fortnight","two weeks"], label:"produced nothing but a flat buzz for a fortnight"},
+       {accept:["others","faster","progressing"], label:"the others appeared to be progressing faster"},
+       {accept:["three weeks","reliably","repeat","control"], label:"took another three weeks to find the note reliably"},
+       {accept:["sounds simple","not simple","harder than it","not easy"], label:"the humming exercise is much harder than it sounds"}
+     ],
+     trap:{words:["patient","surprised","turned round"], msg:"True, but not a difficulty. The heading is the question \u2014 read it again before you write."}}
+  ];
+
+  var PAIRS = [
+    ["are generally credited with developing","are believed to have invented"],
+    ["I began to wonder whether I should stop","she considered giving up"],
+    ["endlessly patient \u2026 I had imagined \u2026 strict","her expectations of him were wrong"],
+    ["I would love to tell you that I could \u2026 in fact","she could not do it at first"],
+    ["nothing but a flat buzz","she made no real progress"],
+    ["noises I used to ignore","sounds she had not noticed before"]
+  ];
+
+
+
+  /* ---------------- helpers ---------------- */
+  function el(t,c,h){var e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;}
+  function norm(s){return (s||"").toLowerCase().replace(/[\u2018\u2019\u201c\u201d]/g,"'")
+    .replace(/[.,;:!?"()\-\u2014\u2013]/g," ").replace(/\s+/g," ").trim();}
+  function hits(v,list){var a=norm(v); if(!a) return false;
+    for(var i=0;i<list.length;i++){ if(a.indexOf(norm(list[i]))!==-1) return true; } return false;}
+
+  var state = {ex2:{}, ex3:{}, listen:{}, scores:{}};
+
+  /* ---------------- ten words ---------------- */
+  var wl = document.getElementById("wordlist");
+  WORDS.forEach(function(w,i){
+    wl.appendChild(el("div","crow",
+      '<span class="n">'+(i+1)+'</span><span class="t"><b>'+w[0]+'</b></span>'+
+      '<span class="a" style="visibility:hidden">'+w[1]+'</span>'));
+  });
+  function showWords(){
+    wl.querySelectorAll(".a").forEach(function(a){ a.style.visibility="visible"; });
+    document.getElementById("s-words").innerHTML = "<b>10</b> words";
+  }
+
+  /* ---------------- pack answer lists ---------------- */
+  function fillChecklist(id, rows){
+    var box = document.getElementById(id);
+    rows.forEach(function(r){
+      box.appendChild(el("div","crow",
+        '<span class="n">'+r[0]+'</span><span class="t">'+r[2]+'</span><span class="a">'+r[1]+'</span>'));
+    });
+  }
+  fillChecklist("packex4", PACK_EX4);
+  fillChecklist("packart", PACK_ART);
+  document.addEventListener("click", function(e){
+    var b = e.target.closest ? e.target.closest("[data-reveal]") : null;
+    if(!b) return;
+    document.getElementById(b.getAttribute("data-reveal")).classList.remove("hidden-answers");
+    b.textContent = "Revealed";
+    b.disabled = true;
+  });
+
+  /* ---------------- pre-teach ---------------- */
+  var pt = document.getElementById("preteach");
+  PRE.forEach(function(p){
+    pt.appendChild(el("div","wcard",'<span class="w">'+p.w+'</span><span class="d">'+p.d+'</span>'));
+  });
+
+  /* ---------------- Exercise 2 ---------------- */
+  var e2 = document.getElementById("ex2");
+  EX2.forEach(function(item,idx){
+    var row = el("div","matchrow");
+    row.innerHTML = '<div class="stmt"><span class="qn">'+item.n+'</span> '+item.s+'</div>';
+    var letters = el("div","letters"); item._b = {};
+    ["A","B","C","D"].forEach(function(L){
+      var b = el("button",null,L); b.type="button";
+      b.setAttribute("aria-label","Section "+L+" for "+item.n);
+      b.addEventListener("click", function(){
+        state.ex2[idx] = L;
+        ["A","B","C","D"].forEach(function(X){ item._b[X].className = (X===L?"picked":""); });
+      });
+      item._b[L] = b; letters.appendChild(b);
+    });
+    row.appendChild(letters); e2.appendChild(row);
+    var fb = el("div","fb"); e2.appendChild(fb); item._fb = fb;
+  });
+  function checkEx2(){
+    var got = 0;
+    EX2.forEach(function(item,idx){
+      var p = state.ex2[idx], ok = p === item.a;
+      if(ok) got++;
+      ["A","B","C","D"].forEach(function(X){
+        item._b[X].className = (X===item.a) ? "right" : (X===p ? "wrong" : "");
+      });
+      item._fb.className = "fb show " + (ok?"good":"bad");
+      item._fb.innerHTML = '<span class="v">'+(ok?"Correct \u2014 "+item.a:"Answer: "+item.a)+'</span>'+item.why;
+    });
+    document.getElementById("s-ex2").innerHTML = "<b>"+got+"</b> / 6";
+    state.scores.ex2 = got; renderBaseline();
+  }
+
+  /* ---------------- Exercise 3 ---------------- */
+  var e3 = document.getElementById("ex3");
+  EX3.forEach(function(item,idx){
+    var d = el("div","q");
+    d.innerHTML = '<div class="qh"><span class="qn">'+(8+idx)+'</span>'+
+      '<span class="qt"><b>'+item.heading+'</b></span><span class="qm">['+item.marks+']</span></div>';
+    var box = el("div","ans"); item._in = [];
+    for(var i=0;i<item.marks;i++){
+      var inp = el("input"); inp.type="text"; inp.placeholder = "note "+(i+1);
+      inp.setAttribute("aria-label", item.heading+" note "+(i+1));
+      box.appendChild(inp); item._in.push(inp);
+    }
+    d.appendChild(box);
+    var fb = el("div","fb"); d.appendChild(fb); item._fb = fb;
+    e3.appendChild(d);
+  });
+  function checkEx3(){
+    var total = 0;
+    EX3.forEach(function(item){
+      var used = [], got = 0;
+      item._in.forEach(function(inp){
+        var f = -1;
+        for(var i=0;i<item.pool.length;i++){
+          if(used.indexOf(i)===-1 && hits(inp.value, item.pool[i].accept)){ f=i; break; }
+        }
+        if(f>-1){ used.push(f); got++; inp.className="ok"; }
+        else inp.className = norm(inp.value) ? "no" : "";
+      });
+      total += got;
+      var joined = item._in.map(function(i){return i.value;}).join(" ");
+      var msg = "";
+      if(item.trap && got < item.marks && hits(joined, item.trap.words)) msg += item.trap.msg + "<br><br>";
+      msg += "<b>Accepted notes:</b> " + item.pool.map(function(p){return p.label;}).join(" \u00b7 ");
+      item._fb.className = "fb show " + (got===item.marks?"good":"bad");
+      item._fb.innerHTML = '<span class="v">'+got+' of '+item.marks+'</span>'+msg;
+    });
+    document.getElementById("s-ex3").innerHTML = "<b>"+total+"</b> / 6";
+    state.scores.ex3 = total; renderBaseline();
+  }
+
+  /* ---------------- paraphrase table ---------------- */
+  var ptb = document.getElementById("pairs");
+  PAIRS.forEach(function(p){
+    ptb.appendChild(el("tr",null,"<td>"+p[0]+"</td><td>"+p[1]+"</td>"));
+  });
+
+  /* ---------------- listening ---------------- */
+  var lb = document.getElementById("listen");
+  LISTEN.forEach(function(item,idx){
+    var d = el("div","q");
+    d.innerHTML = '<div class="qh"><span class="qn">'+item.n+'</span><span class="qt">'+item.q+'</span><span class="qm">[1]</span></div>';
+    var opts = el("div","opts"); item._o = [];
+    item.opts.forEach(function(t,j){
+      var b = el("button","opt",'<span class="k">'+"ABC"[j]+'</span><span>'+t+'</span>'); b.type="button";
+      b.addEventListener("click", function(){
+        state.listen[idx] = j;
+        item._o.forEach(function(x,k){ x.className = "opt" + (k===j?" pick":""); });
+      });
+      item._o.push(b); opts.appendChild(b);
+    });
+    d.appendChild(opts); lb.appendChild(d);
+  });
+  function checkListen(){
+    var got = 0;
+    LISTEN.forEach(function(item,idx){
+      var p = state.listen[idx], ok = p === item.a;
+      if(ok) got++;
+      item._o.forEach(function(b,j){ b.className = "opt" + (j===item.a?" right":(j===p?" wrong":"")); });
+    });
+    document.getElementById("s-listen").innerHTML = "<b>"+got+"</b> / 10";
+    state.scores.listen = got; renderBaseline();
+  }
+
+  /* ---------------- baseline ---------------- */
+  function renderBaseline(){
+    var sc = state.scores, box = document.getElementById("baseline");
+    function row(lab,val){
+      var p = (val==null||val==="");
+      return '<div class="brow"><span class="lab">'+lab+'</span><span class="val'+(p?" pending":"")+'">'+
+             (p?"not done yet":val)+'</span></div>';
+    }
+    box.innerHTML =
+      row("Exercise 2 \u2014 which section", sc.ex2==null?null:sc.ex2+" / 6") +
+      row("Exercise 3 \u2014 note-making", sc.ex3==null?null:sc.ex3+" / 6") +
+      row("Reading today", (sc.ex2==null&&sc.ex3==null)?null:((sc.ex2||0)+(sc.ex3||0))+" / 12") +
+      row("Listening \u2014 Paper 2 Ex 2", sc.listen==null?null:sc.listen+" / 10");
+    document.getElementById("copybox").value =
+      "MISHEEL \u2014 Sun 20 Sep 2026 \u00b7 Block 1 weekend 2\n" +
+      "------------------------------------------\n" +
+      "Ex2 which section   " + (sc.ex2==null?"\u2014":sc.ex2+"/6") + "\n" +
+      "Ex3 note-making     " + (sc.ex3==null?"\u2014":sc.ex3+"/6") + "\n" +
+      "Reading today       " + ((sc.ex2==null&&sc.ex3==null)?"\u2014":((sc.ex2||0)+(sc.ex3||0))+"/12") + "\n" +
+      "Listening P2 Ex2    " + (sc.listen==null?"\u2014":sc.listen+"/10") + "\n" +
+      "Words recalled      ___ / 10\n" +
+      "Self-corrections    ___ (from Saturday)\n" +
+      "\nSET: pack in tomorrow \u00b7 Murphy 71-72 \u00b7 10 words \u00b7 3 paraphrase pairs \u00b7 relisten Friday";
+  }
+  document.getElementById("copybtn").addEventListener("click", function(){
+    var b = document.getElementById("copybox");
+    b.select(); b.setSelectionRange(0,99999);
+    if(navigator.clipboard) navigator.clipboard.writeText(b.value).catch(function(){});
+    document.getElementById("copybtn").textContent = "Copied";
+  });
+
+  /* ---------------- check / reset ---------------- */
+  var CHECK = {words:showWords, ex2:checkEx2, ex3:checkEx3, listen:checkListen};
+  document.addEventListener("click", function(e){
+    var t = e.target.closest ? e.target.closest("[data-check],[data-reset]") : null;
+    if(!t) return;
+    var c = t.getAttribute("data-check");
+    if(c){ CHECK[c](); return; }
+    var r = t.getAttribute("data-reset");
+    if(r==="ex2"){ state.ex2={}; EX2.forEach(function(i){ for(var k in i._b) i._b[k].className=""; i._fb.className="fb"; });
+      document.getElementById("s-ex2").textContent=""; }
+    if(r==="ex3"){ state.ex3={}; EX3.forEach(function(i){ i._in.forEach(function(x){x.value="";x.className="";}); i._fb.className="fb"; });
+      document.getElementById("s-ex3").textContent=""; }
+    if(r==="listen"){ state.listen={}; LISTEN.forEach(function(i){ i._o.forEach(function(b){b.className="opt";}); });
+      document.getElementById("s-listen").textContent=""; }
+    delete state.scores[r]; renderBaseline();
+  });
+
+  /* ---------------- stages + clock ---------------- */
+  var stages = Array.prototype.slice.call(document.querySelectorAll(".stage"));
+  var stepsBar = document.getElementById("steps"), cur = 0;
+  stages.forEach(function(s,i){
+    var b = el("button",null,'<span class="i">'+(i+1)+'</span>'+s.dataset.title); b.type="button";
+    b.addEventListener("click", function(){ go(i); });
+    stepsBar.appendChild(b);
+  });
+  var stepBtns = Array.prototype.slice.call(stepsBar.children);
+  var prevB = document.getElementById("prev"), nextB = document.getElementById("next");
+
+  var clock = document.getElementById("clock"), ctime = document.getElementById("ctime");
+  var cstart = document.getElementById("cstart"), creset = document.getElementById("creset");
+  var endsAt = null, mins = 0, tick = null;
+  function fmt(ms){ if(ms<0)ms=0; var s=Math.round(ms/1000);
+    return String(Math.floor(s/60))+":"+String(s%60).padStart(2,"0"); }
+  function paint(){
+    if(!endsAt){ ctime.innerHTML = mins?(mins+":00"):"&#x2014;"; clock.className="clock"; return; }
+    var left = endsAt - Date.now();
+    ctime.textContent = fmt(left);
+    clock.className = "clock " + (left<=0?"done":"run");
+    if(left<=0 && tick){ clearInterval(tick); tick=null; }
+  }
+  function resetClock(m){ mins=m; endsAt=null; if(tick){clearInterval(tick);tick=null;}
+    cstart.textContent="Start"; clock.style.display = m?"":"none"; paint(); }
+  cstart.addEventListener("click", function(){
+    if(!mins) return;
+    endsAt = Date.now()+mins*60000;
+    if(tick) clearInterval(tick);
+    tick = setInterval(paint,250); cstart.textContent="Restart"; paint();
+  });
+  creset.addEventListener("click", function(){ resetClock(mins); });
+
+  function go(i){
+    cur = i;
+    stages.forEach(function(s,j){ s.classList.toggle("on", j===i); });
+    stepBtns.forEach(function(b,j){ b.setAttribute("aria-current", j===i?"true":"false"); });
+    prevB.disabled = i===0; nextB.disabled = i===stages.length-1;
+    stepBtns[i].scrollIntoView({block:"nearest",inline:"nearest"});
+    window.scrollTo({top:0});
+    resetClock(parseInt(stages[i].dataset.mins,10)||0);
+    var pct = Math.round((i+1)/stages.length*100);
+    document.getElementById("progbar").style.width = pct+"%";
+    document.getElementById("progtext").textContent =
+      "Stage "+(i+1)+" of "+stages.length+"  \u00b7  "+stages[i].dataset.title+"  \u00b7  "+pct+"% through";
+    stepBtns.forEach(function(b,j){ b.classList.toggle("done", j<i); });
+  }
+  prevB.addEventListener("click", function(){ if(cur>0) go(cur-1); });
+  nextB.addEventListener("click", function(){ if(cur<stages.length-1) go(cur+1); });
+
+  go(0); renderBaseline();
+})();
+</script>
+
+</body>
+</html>
