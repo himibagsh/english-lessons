@@ -244,6 +244,10 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
 .crow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:14px;align-items:center;
   padding:13px 0;border-top:1px solid var(--line-soft);font-size:16.5px}
 .crow:first-child{border-top:none}
+/* a crow whose first cell is a word-length label, not a number: give it room */
+.crow.lab{grid-template-columns:minmax(92px,max-content) minmax(0,1fr);align-items:start}
+.crow.lab .L{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent);padding-top:4px;white-space:nowrap}
 .crow .n{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 .crow .t{color:var(--ink-2);line-height:1.45}
 .crow .t b{color:var(--ink);font-weight:700}
@@ -352,9 +356,9 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
     <div class="rubric">You will receive up to <b>6 marks for the content</b> of your article
       and up to <b>9 marks for the language</b> used. Write about <b>120 to 160 words</b>.</div>
     <div class="pairs">
-      <div class="crow"><span class="L">Exercise 5</span><span>An email. One friend. You tell
+      <div class="crow lab"><span class="L">Exercise 5</span><span>An email. One friend. You tell
         them what happened to you.</span></div>
-      <div class="crow"><span class="L">Exercise 6</span><span>An article. Strangers reading it.
+      <div class="crow lab"><span class="L">Exercise 6</span><span>An article. Strangers reading it.
         You take a <b>position</b> and argue for it.</span></div>
     </div>
     <div class="tipbox">
@@ -451,16 +455,16 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
     <p class="lede" style="margin-top:18px">I have written 1 and 2. You say 3 and 4 out loud
       &#8212; whole sentences, not the idea.</p>
     <div class="pairs">
-      <div class="crow"><span class="L">1 &#183; Open</span><span>Should a working week be four
+      <div class="crow lab"><span class="L">1 &#183; Open</span><span>Should a working week be four
         days instead of five? My class could not agree, and at first neither could I. Having
         thought about it, I believe it would work &#8212; but not everywhere.</span></div>
-      <div class="crow"><span class="L">2 &#183; Other side</span><span>Several people worried
+      <div class="crow lab"><span class="L">2 &#183; Other side</span><span>Several people worried
         that workers would earn less and that companies would simply have to hire more staff.
         Those are fair objections. A hospital cannot close on Fridays, and somebody has to pay
         the extra wages.</span></div>
-      <div class="crow"><span class="L">3 &#183; Your side</span><span class="pending">However, I
+      <div class="crow lab"><span class="L">3 &#183; Your side</span><span class="pending">However, I
         think &#8230;  <b>your reason, plus one idea that is on no card</b></span></div>
-      <div class="crow"><span class="L">4 &#183; Verdict</span><span class="pending">So &#8230;
+      <div class="crow lab"><span class="L">4 &#183; Verdict</span><span class="pending">So &#8230;
         <b>answer the question</b></span></div>
     </div>
     <div class="tipbox">
@@ -503,10 +507,10 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
     </div>
     <p class="lede">Five minutes planning out loud. All four lines before you write a word.</p>
     <div class="pairs">
-      <div class="crow"><span class="L">1 &#183; Open</span><span class="pending">the question, and where you stand</span></div>
-      <div class="crow"><span class="L">2 &#183; Other side</span><span class="pending">which TWO cards must you answer?</span></div>
-      <div class="crow"><span class="L">3 &#183; Your side</span><span class="pending">your reason + the idea on no card</span></div>
-      <div class="crow"><span class="L">4 &#183; Verdict</span><span class="pending">the actual answer</span></div>
+      <div class="crow lab"><span class="L">1 &#183; Open</span><span class="pending">the question, and where you stand</span></div>
+      <div class="crow lab"><span class="L">2 &#183; Other side</span><span class="pending">which TWO cards must you answer?</span></div>
+      <div class="crow lab"><span class="L">3 &#183; Your side</span><span class="pending">your reason + the idea on no card</span></div>
+      <div class="crow lab"><span class="L">4 &#183; Verdict</span><span class="pending">the actual answer</span></div>
     </div>
     <div class="tipbox">
       <span class="tiplbl">Twenty-five minutes, then stop</span>
