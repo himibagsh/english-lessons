@@ -248,6 +248,14 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
 .crow.lab{grid-template-columns:minmax(92px,max-content) minmax(0,1fr);align-items:start}
 .crow.lab .L{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;
   text-transform:uppercase;color:var(--accent);padding-top:4px;white-space:nowrap}
+/* ---------- stat tiles: a row of numbers with captions ---------- */
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:16px}
+.tal{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:14px 16px;
+  text-align:center}
+.tal .n{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--accent);
+  font-variant-numeric:tabular-nums;line-height:1.1}
+.tal .l{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  margin-top:4px}
 .crow .n{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 .crow .t{color:var(--ink-2);line-height:1.45}
 .crow .t b{color:var(--ink);font-weight:700}
@@ -324,9 +332,9 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
 <section class="stage" data-id="words" data-title="Ten words" data-mins="12">
   <div class="panel">
     <div class="phead"><h2>Say them, do not define them</h2><span class="meta">12 minutes</span></div>
-    <p class="lede">These are the ten you had on Monday. I am not asking what they mean &#8212;
-      I am asking you to use each one in a sentence about a film, out loud, with no thinking
-      time. If a sentence takes more than five seconds the word is not yours yet.</p>
+    <p class="lede">The ten from Monday. I am not asking what they mean &#8212; use each one in
+      a sentence about a film, out loud, no thinking time. More than five seconds and the word
+      is not yours yet.</p>
     <div class="words">
       <div class="wcard"><b>a sequel</b></div>
       <div class="wcard"><b>a franchise</b></div>
@@ -339,211 +347,216 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
       <div class="wcard"><b>to live up to</b></div>
       <div class="wcard"><b>a plot twist</b></div>
     </div>
-    <div class="tipbox">
-      <span class="tiplbl">Three of these are not about quality</span>
-      <p><em>A sequel</em>, <em>a franchise</em> and <em>the target audience</em> describe what
-        a film <b>is</b>, not whether it is any good. That distinction is the whole difference
-        between a review and an opinion, and it is what today is built on.</p>
-    </div>
   </div>
 </section>
 
-<section class="stage" data-id="what6" data-title="What it is" data-mins="13">
+<section class="stage" data-id="what6" data-title="What it is" data-mins="10">
   <div class="panel">
-    <div class="phead"><h2>Exercise 6</h2><span class="meta">13 minutes</span></div>
-    <p class="lede">You have met this once and I took it away again, because you had not been
-      taught the shape. Today you get the shape.</p>
-    <div class="rubric">You will receive up to <b>6 marks for the content</b> of your article
-      and up to <b>9 marks for the language</b> used. Write about <b>120 to 160 words</b>.</div>
+    <div class="phead"><h2>Exercise 6</h2><span class="meta">10 minutes</span></div>
+    <p class="lede">You met this once and I took it away, because you had not been taught the
+      shape. Today you work it out from an example instead of being told it.</p>
+    <div class="rubric">Up to <b>6 marks for content</b>, up to <b>9 marks for language</b>.
+      <b>120 to 160 words.</b></div>
     <div class="pairs">
-      <div class="crow lab"><span class="L">Exercise 5</span><span>An email. One friend. You tell
-        them what happened to you.</span></div>
-      <div class="crow lab"><span class="L">Exercise 6</span><span>An article. Strangers reading it.
-        You take a <b>position</b> and argue for it.</span></div>
+      <div class="crow lab"><span class="L">Exercise 5</span><span>An email. One friend. You
+        tell them what happened to you.</span></div>
+      <div class="crow lab"><span class="L">Exercise 6</span><span>An article. Strangers
+        reading it. You take a <b>position</b> and argue for it.</span></div>
     </div>
     <div class="tipbox">
-      <span class="tiplbl">The rule that decides your content mark</span>
-      <p>The four comments are a <b>springboard, not a list</b>. Repeat them and you cannot go
-        above 4 out of 6. The paper says it out loud: <em>you should also use some ideas of your
-        own.</em> At least one idea in your article must be yours and yours only.</p>
-    </div>
-    <div class="phead" style="margin-top:22px"><h2>Four paragraphs, four jobs</h2></div>
-    <div class="sec"><div class="L">1</div><p><b>Open.</b> Name the question, say where you
-      stand. Two sentences. No "Hello everyone".</p></div>
-    <div class="sec"><div class="L">2</div><p><b>The other side.</b> Take one or two comments
-      you do <em>not</em> agree with, and admit what is true in them.</p></div>
-    <div class="sec"><div class="L">3</div><p><b>Your side.</b> Your strongest reason, plus the
-      idea that is <em>on no card at all</em>.</p></div>
-    <div class="sec"><div class="L">4</div><p><b>Verdict.</b> One or two sentences that answer
-      the question. Not "it depends".</p></div>
-    <p class="lede">About 35 words each. That is 140, which lands inside the window without you
-      counting a single word.</p>
-  </div>
-</section>
-
-<section class="stage" data-id="model" data-title="Watch one" data-mins="25">
-  <div class="panel">
-    <div class="phead"><h2>Is your town a good place for teenagers?</h2><span class="meta">25 minutes &#183; 0511/12, June 2024</span></div>
-    <div class="rubric">Your local newspaper has asked readers to send in articles about whether
-      your town is a good place for teenagers to live.<br><br>
-      Now write an article for the local newspaper giving your views.</div>
-    <div class="words">
-      <div class="wcard"><b>I think the entertainment here is more for adults than us.</b></div>
-      <div class="wcard"><b>Everything is so expensive in the town centre.</b></div>
-      <div class="wcard"><b>There are lots of places for people our age to meet up.</b></div>
-      <div class="wcard"><b>Getting from one part of town to another is easy.</b></div>
-    </div>
-    <p class="lede" style="margin-top:18px">Before I show you anything: two of those are
-      positive and two are negative. Which two would you have to answer, and which two would
-      you use?</p>
-
-    <div class="acts"><button class="btn" type="button" data-reveal="m1">Show paragraph 1</button></div>
-    <div id="m1" class="revealbox checklist hidden-answers">
-      <p class="lede"><span class="hl">Open</span><br>
-        Is Ulaanbaatar a good place to be fifteen? Ask ten of us and you will get ten answers.
-        My own is yes &#8212; but only if you already know where to go, and that is the
-        problem.</p>
-      <p class="lede"><b>What it does:</b> the question in line one, the position in line two.
-        The words <em>but only if</em> are doing the real work: they promise an argument, so the
-        reader keeps going.</p>
-    </div>
-
-    <div class="acts"><button class="btn" type="button" data-reveal="m2">Show paragraph 2</button></div>
-    <div id="m2" class="revealbox checklist hidden-answers">
-      <p class="lede"><span class="hl">The other side</span><br>
-        Some of my friends complain that the entertainment is designed for adults and that the
-        town centre is far too expensive. They are not wrong. A cinema ticket costs more than I
-        get in a week, and most of the cafes expect you to keep buying things to stay.</p>
-      <p class="lede"><b>What it does:</b> picks up <em>two</em> cards without quoting them, and
-        <em>They are not wrong</em> is the handshake. Then it makes them concrete &#8212; a
-        ticket, a cafe. Concrete beats general every time.</p>
-    </div>
-
-    <div class="acts"><button class="btn" type="button" data-reveal="m3">Show paragraph 3</button></div>
-    <div id="m3" class="revealbox checklist hidden-answers">
-      <p class="lede"><span class="hl">Your side</span><br>
-        However, what a city gives you is not only what you can pay for. I learned more from
-        walking home a different way each evening than from anywhere I have ever bought a
-        ticket to. A town is good for teenagers when it is safe enough to be wandered around.</p>
-      <p class="lede"><b>What it does:</b> <em>However</em> turns the whole article. And nobody
-        on any card mentioned safety or walking &#8212; that is the idea that is mine, and it is
-        where the content mark is earned.</p>
-    </div>
-
-    <div class="acts"><button class="btn" type="button" data-reveal="m4">Show paragraph 4</button></div>
-    <div id="m4" class="revealbox checklist hidden-answers">
-      <p class="lede"><span class="hl">Verdict</span><br>
-        So yes, this is a good place to grow up &#8212; not because of what it sells us, but
-        because of what it lets us do for nothing.</p>
-      <p class="lede"><b>What it does:</b> answers the question with <em>So yes</em>, and the
-        last line is worth remembering. 141 words.</p>
+      <span class="tiplbl">The one rule I will give you before you start</span>
+      <p>The four comments are a <b>springboard, not a list</b>. The paper says so out loud:
+        <em>you should also use some ideas of your own.</em> Everything else about the shape,
+        you are going to find yourself in the next twenty minutes.</p>
     </div>
   </div>
 </section>
 
-<section class="stage" data-id="faded" data-title="Half of one" data-mins="20">
+<section class="stage" data-id="read" data-title="Read it once" data-mins="10">
   <div class="panel">
-    <div class="phead"><h2>Now half of one</h2><span class="meta">20 minutes &#183; 0511/11, June 2025</span></div>
-    <div class="rubric">In class, you have been discussing whether employees should be required
-      to work for a maximum of <b>four days a week</b>, giving them three days of free time.</div>
-    <div class="words">
-      <div class="wcard"><b>People would be happier!</b></div>
-      <div class="wcard"><b>Would they earn less?</b></div>
-      <div class="wcard"><b>Everyone would get more done.</b></div>
-      <div class="wcard"><b>The company would need more staff.</b></div>
-    </div>
-    <p class="lede" style="margin-top:18px">I have written 1 and 2. You say 3 and 4 out loud
-      &#8212; whole sentences, not the idea.</p>
-    <div class="pairs">
-      <div class="crow lab"><span class="L">1 &#183; Open</span><span>Should a working week be four
-        days instead of five? My class could not agree, and at first neither could I. Having
-        thought about it, I believe it would work &#8212; but not everywhere.</span></div>
-      <div class="crow lab"><span class="L">2 &#183; Other side</span><span>Several people worried
-        that workers would earn less and that companies would simply have to hire more staff.
-        Those are fair objections. A hospital cannot close on Fridays, and somebody has to pay
-        the extra wages.</span></div>
-      <div class="crow lab"><span class="L">3 &#183; Your side</span><span class="pending">However, I
-        think &#8230;  <b>your reason, plus one idea that is on no card</b></span></div>
-      <div class="crow lab"><span class="L">4 &#183; Verdict</span><span class="pending">So &#8230;
-        <b>answer the question</b></span></div>
-    </div>
-    <div class="tipbox">
-      <span class="tiplbl">Check the promise</span>
-      <p>Paragraph 1 says <em>it would work &#8212; but not everywhere</em>. Paragraph 3 has to
-        say <b>where</b>. If it does not, the article does not hold together, and that is
-        exactly what the examiner is reading for.</p>
-    </div>
-    <div class="acts"><button class="btn ghost" type="button" data-reveal="f3">Show one version</button>
-      <span class="score">only after you have said yours</span></div>
-    <div id="f3" class="revealbox checklist hidden-answers">
-      <p class="lede"><b>3</b> &#8212; However, I think tired people work badly. My uncle drives
-        a bus six days a week and admits he makes mistakes by Saturday. In a job where a mistake
-        costs something, a rested worker is worth more than a long one.</p>
-      <p class="lede"><b>4</b> &#8212; So I would give four days to anyone whose work can wait a
-        day, and pay the rest properly for the fifth. We should measure work by what gets
-        finished, not by hours at a desk.</p>
-    </div>
-  </div>
-</section>
-
-<section class="stage" data-id="yours" data-title="Yours" data-mins="35">
-  <div class="panel">
-    <div class="phead"><h2>Your turn &#183; and you already have the material</h2><span class="meta">35 minutes &#183; 0511/11, Nov 2024</span></div>
-    <div class="rubric">Your class has recently been talking about films, and you have decided
-      to write an article for your school magazine. In your article, write about <b>what you
-      think makes a film enjoyable</b>.<br><br>
-      About 120 to 160 words. 6 marks content, 9 marks language.</div>
+    <div class="phead"><h2>One article, written by somebody who got full marks</h2><span class="meta">10 minutes</span></div>
+    <p class="lede">The question was <b>what makes a film enjoyable</b>, and these were the four
+      comments printed with it.</p>
+    
     <div class="words">
       <div class="wcard"><b>I like films about real events.</b></div>
       <div class="wcard"><b>Too many films are about the same thing!</b></div>
       <div class="wcard"><b>I prefer films with famous actors in them.</b></div>
       <div class="wcard"><b>Most films are too long!</b></div>
     </div>
-    <div class="tipbox">
-      <span class="tiplbl">You wrote four boxes about this yesterday</span>
-      <p>Your best film and why. What ruins a film every time. What a film can do that a book
-        cannot. Whether Toy Story 5 was made for you. <b>Paragraph 3 is sitting in those
-        boxes.</b> Read them to me before you plan anything.</p>
+
+    <div class="panel article" style="margin-top:20px">
+      
+<p><b>What makes a film enjoyable?</b></p>
+<p>What makes a film worth two hours of your life? My class could not agree on a single thing,
+which is probably the most honest answer anyone gave. For me, though, one quality matters more
+than all the others.</p>
+<p>Several people said they prefer films with famous actors, and others complained that most
+films are simply too long. I understand both. A familiar face is reassuring, and nobody enjoys
+checking their watch in the dark.</p>
+<p>However, I think a film is enjoyable when I cannot guess what happens next. The actors can be
+unknown and the film can run for three hours; if the story keeps moving somewhere I did not
+expect, I never notice the time. My favourite film last year had nobody famous in it at all.</p>
+<p>So a good film is not about length or stars. It is about whether you forget, for a while,
+that you are watching one.</p>
+
     </div>
-    <p class="lede">Five minutes planning out loud. All four lines before you write a word.</p>
-    <div class="pairs">
-      <div class="crow lab"><span class="L">1 &#183; Open</span><span class="pending">the question, and where you stand</span></div>
-      <div class="crow lab"><span class="L">2 &#183; Other side</span><span class="pending">which TWO cards must you answer?</span></div>
-      <div class="crow lab"><span class="L">3 &#183; Your side</span><span class="pending">your reason + the idea on no card</span></div>
-      <div class="crow lab"><span class="L">4 &#183; Verdict</span><span class="pending">the actual answer</span></div>
-    </div>
+    <p class="lede">Read it twice. First straight through. Then again slowly, with one question
+      in your head: <b>why is it in this order?</b></p>
     <div class="tipbox">
-      <span class="tiplbl">Twenty-five minutes, then stop</span>
-      <p>On paper. When I say stop, stop &#8212; even mid-sentence. Then count the words and
-        write the number at the bottom. Your last three pieces were 106, 108 and 105 words
-        against a target of 120. That is a mark you are giving away for nothing.</p>
+      <span class="tiplbl">Say one thing before we take it apart</span>
+      <p>Which single sentence would you take out if you had to lose one? Do not justify it yet.</p>
     </div>
   </div>
 </section>
 
-<section class="stage" data-id="close" data-title="Read it back" data-mins="15">
+<section class="stage" data-id="apart" data-title="Take it apart" data-mins="30">
   <div class="panel">
-    <div class="phead"><h2>Four checks, then we are done</h2><span class="meta">15 minutes</span></div>
-    <p class="lede">You read, I say nothing. Find them yourself &#8212; that is the whole skill.</p>
-    <div class="sec"><div class="L">1</div><p><b>Count the words.</b> Under 120? Paragraph 3
-      is where the missing sentences go &#8212; never the opening.</p></div>
-    <div class="sec"><div class="L">2</div><p><b>Point at your own idea.</b> If you cannot point
-      at it, it is not there, and that is a content mark gone.</p></div>
-    <div class="sec"><div class="L">3</div><p><b>Every noun: a, the, or nothing?</b> You can do
-      this on paper. The question is whether you can do it while thinking about something
-      else.</p></div>
-    <div class="sec"><div class="L">4</div><p><b>Read the whole thing out loud.</b> Not in your
-      head. Out loud.</p></div>
+    <div class="phead"><h2>Five questions about that article</h2><span class="meta">30 minutes</span></div>
+    <p class="lede">Answer each one out loud before you open it. Being wrong here costs nothing
+      and teaches more than being told.</p>
+
+    <div class="q">
+      <div class="qh"><span class="qn">1</span><span class="qt">Each paragraph is doing a
+        different job. Say what each one does, in your own words.</span></div>
+      <div class="acts"><button class="btn ghost" type="button" data-reveal="a1">Check</button></div>
+      <div id="a1" class="revealbox checklist hidden-answers">
+        <div class="pairs">
+          <div class="crow lab"><span class="L">1 &#183; Open</span><span>Names the question,
+            then says a position is coming. <em>One quality matters more than all the
+            others</em> is a promise.</span></div>
+          <div class="crow lab"><span class="L">2 &#183; Other side</span><span>Takes two
+            opinions it does not share and admits what is true in them.</span></div>
+          <div class="crow lab"><span class="L">3 &#183; Your side</span><span>The writer's own
+            answer, with a reason and an example.</span></div>
+          <div class="crow lab"><span class="L">4 &#183; Verdict</span><span>Answers the
+            question. Short, and does not introduce anything new.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><span class="qn">2</span><span class="qt">One word turns the whole
+        article round. Find it.</span></div>
+      <div class="acts"><button class="btn ghost" type="button" data-reveal="a2">Check</button></div>
+      <div id="a2" class="revealbox checklist hidden-answers">
+        <p class="lede"><span class="hl">However</span>, at the start of paragraph 3. Everything
+          before it is other people's view; everything after it is the writer's. It is the most
+          useful word on the page and it costs one word.</p>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><span class="qn">3</span><span class="qt">Which idea in the article is
+        on <b>none</b> of the four cards? Point at the sentence.</span></div>
+      <div class="acts"><button class="btn ghost" type="button" data-reveal="a3">Check</button></div>
+      <div id="a3" class="revealbox checklist hidden-answers">
+        <p class="lede"><em>"I think a film is enjoyable when I cannot guess what happens
+          next."</em> Nobody mentioned surprise. That sentence is the one earning the content
+          marks &#8212; everything else could have been assembled from the cards.</p>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><span class="qn">4</span><span class="qt">How many of the four cards are
+        actually used, and are they quoted word for word?</span></div>
+      <div class="acts"><button class="btn ghost" type="button" data-reveal="a4">Check</button></div>
+      <div id="a4" class="revealbox checklist hidden-answers">
+        <p class="lede"><b>Two of the four</b>, and neither is quoted. <em>I prefer films with
+          famous actors</em> becomes <em>they prefer films with famous actors</em> inside a
+          longer sentence; <em>Most films are too long!</em> becomes <em>most films are simply
+          too long</em>. The cards about real events and about films being the same were not
+          used at all.</p>
+        <p class="lede"><b>So you do not need all four.</b> Two, reworded, is enough.</p>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><span class="qn">5</span><span class="qt">Count the words in each
+        paragraph. Write the four numbers down before you check.</span></div>
+      <div class="acts"><button class="btn ghost" type="button" data-reveal="a5">Check</button></div>
+      <div id="a5" class="revealbox checklist hidden-answers">
+        <div class="tally">
+          <div class="tal"><div class="n">39</div><div class="l">Open</div></div>
+          <div class="tal"><div class="n">36</div><div class="l">Other side</div></div>
+          <div class="tal"><div class="n">54</div><div class="l">Your side</div></div>
+          <div class="tal"><div class="n">24</div><div class="l">Verdict</div></div>
+        </div>
+        <p class="lede" style="margin-top:16px"><b>153 words.</b> Look at the shape. The
+          paragraph with the writer's own idea in it is <b>the longest by far</b>, and the
+          verdict is the shortest.</p>
+        <p class="lede">Your last three pieces were 106, 105 and 108 words. You are not running
+          out of time &#8212; you are writing a thin paragraph 3. That is where your missing
+          thirty words live, and they are content marks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stage" data-id="yours" data-title="Now you" data-mins="40">
+  <div class="panel">
+    <div class="phead"><h2>Same question. Different answer.</h2><span class="meta">40 minutes</span></div>
+    <div class="rubric">Your class has been talking about films, and you have decided to write
+      an article for your school magazine. In your article, write about <b>what you think makes
+      a film enjoyable</b>.<br><br>About 120 to 160 words.</div>
+    
+    <div class="words">
+      <div class="wcard"><b>I like films about real events.</b></div>
+      <div class="wcard"><b>Too many films are about the same thing!</b></div>
+      <div class="wcard"><b>I prefer films with famous actors in them.</b></div>
+      <div class="wcard"><b>Most films are too long!</b></div>
+    </div>
+
     <div class="tipbox">
-      <span class="tiplbl">One rule worth saying out loud before you go</span>
-      <p>A pupil goes to <b>school</b>. Anybody else goes to <b>the school</b>, because they
-        mean the building. Same for hospital: a patient is <em>in hospital</em>, a nurse works
-        <em>at the hospital</em>. Say both pairs back to me.</p>
+      <span class="tiplbl">The one condition</span>
+      <p>Your answer must <b>not</b> be "you cannot guess what happens next". That one is taken.
+        Paragraph 3 has to be yours &#8212; and you wrote four boxes about films yesterday, so
+        it is already somewhere in those.</p>
+    </div>
+    <p class="lede">Five minutes planning out loud. All four lines filled before you write a
+      single sentence.</p>
+    <div class="pairs">
+      <div class="crow lab"><span class="L">1 &#183; Open</span><span class="pending">the question, and the promise of a position</span></div>
+      <div class="crow lab"><span class="L">2 &#183; Other side</span><span class="pending">which TWO cards will you pick up and reword?</span></div>
+      <div class="crow lab"><span class="L">3 &#183; Your side</span><span class="pending">your answer + a reason + an example. The LONGEST paragraph.</span></div>
+      <div class="crow lab"><span class="L">4 &#183; Verdict</span><span class="pending">answer the question. Short.</span></div>
+    </div>
+    <div class="tipbox">
+      <span class="tiplbl">Twenty-five minutes on the clock</span>
+      <p>On paper, with this page scrolled away from the example. When I say stop, stop. Then
+        count the words in <b>each paragraph</b>, not just the total, and write the four numbers
+        in the margin.</p>
+    </div>
+  </div>
+</section>
+
+<section class="stage" data-id="mark" data-title="Mark your own" data-mins="18">
+  <div class="panel">
+    <div class="phead"><h2>The same five questions, about yours</h2><span class="meta">18 minutes</span></div>
+    <p class="lede">You asked them of someone else's writing an hour ago. Now ask them of your
+      own. I say nothing until you have been through all five.</p>
+    <div class="sec"><div class="L">1</div><p><b>Does each paragraph do one job?</b> Say which,
+      out loud, in order. If two paragraphs are doing the same job, one of them is spare.</p></div>
+    <div class="sec"><div class="L">2</div><p><b>Where is your turn?</b> Point at the word.
+      <em>However</em>, <em>On the other hand</em>, <em>But</em>. If there is no turn, there is
+      no argument &#8212; only a list.</p></div>
+    <div class="sec"><div class="L">3</div><p><b>Point at your own idea.</b> One sentence. If
+      you cannot point at it, it is not there, and that is the difference between 3 content
+      marks and 5.</p></div>
+    <div class="sec"><div class="L">4</div><p><b>How many cards did you use, and did you reword
+      them?</b> Two is plenty. Copied word for word is worth nothing.</p></div>
+    <div class="sec"><div class="L">5</div><p><b>Read your four numbers out.</b> Is paragraph 3
+      the longest? If it is not, that is the thirty words you are missing &#8212; and you now
+      know exactly where to put them.</p></div>
+    <div class="tipbox" style="margin-top:20px">
+      <span class="tiplbl">Then, out loud, both pairs</span>
+      <p>A pupil goes to <b>school</b>. Anyone else goes to <b>the school</b>. A patient is
+        <em>in hospital</em>; a nurse works <em>at the hospital</em>. Say them back to me.</p>
     </div>
     <div class="tipbox">
       <span class="tiplbl">Monday</span>
-      <p>The 5 October pack, with today's article folded inside it &#8212; word count at the
-        bottom and the four paragraph labels written in the margin beside your own paragraphs.</p>
+      <p>The 5 October pack, with today's article inside it &#8212; the four paragraph numbers
+        in the margin and the total at the bottom.</p>
     </div>
   </div>
 </section>
@@ -558,7 +571,7 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
 <script>
 (function(){
   "use strict";
-  var NOTHING = 0;
+  var NONE = 0;
 
   function el(t,c,h){var e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;}
   function norm(s){return (s||"").toLowerCase().replace(/[\u2018\u2019\u201c\u201d]/g,"'")
@@ -692,7 +705,6 @@ input:focus-visible,button:focus-visible,textarea:focus-visible{
       return got;
     };
   }
-
   function renderBaseline(){ return; }
 
 
